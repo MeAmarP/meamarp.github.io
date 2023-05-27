@@ -1,19 +1,11 @@
 ---
 layout: page
-title: Welcome to Lagrange!
+title: Welcome to AMARP's Home!
 permalink: /about
 ---
 
-Lagrange is a minimalist Jekyll theme. The purpose of this theme is to provide a simple, clean, content-focused blogging platform for your personal site or blog. Below you can find everything you need to get started.
+Welcome to my page!. In the exciting field of computer vision, I specialize in employing both traditional image processing and cutting-edge deep learning techniques to tackle real-world challenges.
 
-### Getting Started
+Whether it's enhancing image quality, developing algorithms for video analysis, or building DNN models for image classification, Detection or segmentation, my passion lies in pushing the boundaries of what can be achieved through intelligent visual understanding. I have had the privilege of working on diverse projects, collaborating with talented teams, deploying on Edge devices as well as cloud.
 
-[Getting Started]({{ site.github.url }}{% post_url 2015-10-10-getting-started %}): getting started with installing Lagrange, whether you are completely new to using Jekyll, or simply just migrating to a new Jekyll theme.
-
-### Example Content
-
-[Text and Formatting]({{ site.github.url }}{% post_url 2014-01-01-text-formatting-examples %})
-
-### Questions?
-
-This theme is completely free and open source software. You may use it however you want, as it is distributed under the [MIT License](http://choosealicense.com/licenses/mit/). If you are having any problems, any questions or suggestions, feel free to [tweet at me](https://twitter.com/intent/tweet?text=My%question%about%Lagrange%is:%&amp;via=paululele), or [file a GitHub issue](https://github.com/lenpaul/lagrange/issues/new).
+Through this website, I aim to share my knowledge, experiences, and discoveries with fellow enthusiasts and curious minds. Here, you will find a collection of insights and resources that delve into the fascinating world of computer vision.
