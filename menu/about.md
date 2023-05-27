@@ -1,10 +1,8 @@
 ---
 layout: page
-title: Welcome to AMARP's Home!
+title: Welcome to my page!
 permalink: /about
 ---
-
-Welcome to my page!
 
 I specialize in employing traditional image processing and cutting-edge deep learning techniques to tackle real-world challenges.
 
