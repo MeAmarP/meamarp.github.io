@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Welcome to AMARP's Home!
+title: Welcome to AMAR's Page!
 permalink: /about
 ---
 
