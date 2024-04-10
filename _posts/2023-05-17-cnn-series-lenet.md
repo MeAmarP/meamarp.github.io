@@ -22,17 +22,6 @@ image: mountains.jpg
     - for final output layer radial basis function (RBF) network to classify images.
 - Architecture: LeNet-5's architecture is relatively simple by today's standards but was revolutionary at the time. It consists of the following layers,
 
-| Layer | Layer Type                | # of filters | Feature-Map Size | Kernel Size |
-|-------|---------------------------|-------------------|------------------|-------------|
-|       | Input Layer               | N/A               | 32x32            | N/A         |
-| C1    | Convolutional Layer       | 6                 | 28x28            | 5x5         |
-| S2    | Subsampling (Pooling) Layer| 6                 | 14x14            | 2x2         |
-| C3    | Convolutional Layer       | 16                | 10x10            | 5x5         |
-| S4    | Subsampling (Pooling) Layer| 16                | 5x5              | 2x2         |
-| C5    | Convolutional Layer       | 120               | 1x1              | 5x5         |
-| F6    | Fully Connected Layer     | N/A               | N/A              | N/A         |
-|       | Output Layer              | N/A               | N/A              | N/A         |
----
 <div align="center">
 
 ```mermaid
