@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CNN Series: VGGNet - "
+title: "CNN Series: VGGNet"
 author: "Amar P"
 categories: journal
 tags: [cnn-series,image-models]

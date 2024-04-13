@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CNN Series: AlexNet - ImageNet Classification with Deep Convolutional Neural Networks"
+title: "CNN Series: AlexNet"
 author: "Amar P"
 categories: journal
 tags: [cnn-series,image-models]
