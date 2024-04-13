@@ -20,7 +20,7 @@ image: mountains.jpg
   - One more aspect about LeNet-5 regarding activations is that,
     - for intermediate layers it used tanh
     - for final output layer radial basis function (RBF) network to classify images.
-- Architecture: LeNet-5's architecture is relatively simple by today's standards but was revolutionary at the time. It consists of the following layers,
+- Architecture: LeNet-5's architecture is relatively simple by today's standards but was revolutionary at the time.
 
 [LeNet](assets/img/lenet5.svg)
 
