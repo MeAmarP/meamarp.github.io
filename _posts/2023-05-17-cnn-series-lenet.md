@@ -8,7 +8,7 @@ tags: [cnn-series,image-models]
 
 ## Paper
 
-- **Paper Name**: [Gradient-Based Learning Applied to Document Recognition](http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf)
+- [Gradient-Based Learning Applied to Document Recognition](http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf)
 - **Authors**: Yann LeCun, Leon Bottou, Yoshua Bengio, and Patrick Haffner
 
 ## LeNet:

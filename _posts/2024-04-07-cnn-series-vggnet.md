@@ -8,7 +8,7 @@ tags: [cnn-series,image-models]
 
 ## Paper
 
-- **Paper Name**: [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/abs/1409.1556)
+- [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/abs/1409.1556)
 - **Authors**: Karen Simonyan, Andrew Zisserman
 
 ## VGGNet
