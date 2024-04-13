@@ -23,6 +23,7 @@ plugins: [jekyll-paginate, jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
 title: "AMAR POTDAR"
 description: "Thoughts, Experiences, Projects"
 author: "meamarp"
+url: https://meamarp.github.io/
 # RSS 2.0 can be used instead of Atom by uncommenting following two lines
 #feed:
 #  path: rss-feed.xml
