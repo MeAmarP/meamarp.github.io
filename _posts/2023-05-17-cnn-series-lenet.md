@@ -1,10 +1,9 @@
 ---
 layout: post
-title: "CNN Series:LeNet - Gradient-Based Learning Applied to Document Recognition"
+title: "CNN Series: LeNet - Gradient-Based Learning Applied to Document Recognition"
 author: "Amar P"
 categories: journal
 tags: [cnn-series,image-models]
-image: mountains.jpg
 ---
 
 ## Paper
@@ -22,5 +21,4 @@ image: mountains.jpg
     - for final output layer radial basis function (RBF) network to classify images.
 - Architecture: LeNet-5's architecture is relatively simple by today's standards but was revolutionary at the time.
 
-<!-- [LeNet](assets/img/lenet5.svg) -->
-<img src="{{site.url}}/assets/img/lenet5.svg" style="display: block; margin: auto;" />
+<img src="{{site.url}}/assets/img/lenet.jpg" style="display: block; margin: auto;" />
