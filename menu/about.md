@@ -4,10 +4,10 @@ title: Welcome to my page!
 permalink: /about
 ---
 
-I specialize in employing traditional image processing and cutting-edge deep learning techniques to tackle real-world challenges.
+🌟 Working at the intersection of Generative AI | Computer Vision | Deep Learning 🌟
 
-Whether it's enhancing image quality, developing algorithms for video analysis, or building DNN models for image classification, Detection or segmentation, my passion lies in pushing the boundaries of what can be achieved through intelligent visual understanding. 
+I specialize in employing traditional AI/ML/DL and cutting-edge GenAI to tackle real-world challenges.
 
 I have had the privilege of working on diverse projects, collaborating with talented teams, deploying solutions on Edge devices as well as cloud.
 
-Through this website, I aim to share my knowledge, experiences, and discoveries with fellow enthusiasts and curious minds. Here, you will find a collection of insights and resources that delve into the fascinating world of computer vision.
+Through this website, I aim to share my knowledge, experiences, and discoveries.
