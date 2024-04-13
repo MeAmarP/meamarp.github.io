@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CNN Series: LeNet - Gradient-Based Learning Applied to Document Recognition"
+title: "CNN Series: AlexNet - ImageNet Classification with Deep Convolutional Neural Networks"
 author: "Amar P"
 categories: journal
 tags: [cnn-series,image-models]
