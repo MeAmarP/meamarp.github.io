@@ -115,7 +115,7 @@ data = torch.linspace(-5, 5, 100)
 
 The mathematical formula of the Sigmoid function is:
 
-$\sigma(x) = \frac{1}{1 + e^{-x}}$
+$$\sigma(x) = \frac{1}{1 + e^{-x}}$$
 
 where:
 - $\sigma(x)$ is the output of the sigmoid function,
@@ -172,7 +172,7 @@ plot_output(data, output, 'Sigmoid Activation')
 
 The mathematical formula of the Tanh function is:
 
-$\tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}$
+$$\tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}$$
 
 where:
 - $\tanh(x)$ is the output of the Tanh function,
@@ -226,7 +226,7 @@ plot_output(data, output, 'Tanh')
 
 The mathematical formula of the ReLU function is:
 
-${ReLU}(x) = \max(0, x)$
+$${ReLU}(x) = \max(0, x)$$
 
 where:
 - $x$ is the input to the function.
@@ -280,16 +280,14 @@ plot_output(data, output, 'ReLU')
 
 The mathematical formula of the LeakyReLU function is:
 
-\begin{align}
-\text{LeakyReLU}(x) = \begin{cases} 
+$$LeakyReLU(x) = \begin{cases}
 x & \text{if } x > 0 \\
 \alpha x & \text{if } x \leq 0
-\end{cases}
-\end{align}
+\end{cases}$$
 
 where:
 - $x$ is the input to the function,
-- $\alpha$ is a small constant (e.g., 0.01) that determines the slope of the function for $ x\leq 0$.
+- $\alpha$ is a small constant (e.g., 0.01) that determines the slope of the function for $x\leq 0$.
 
 ### Advantages and Disadvantages of the LeakyReLU Function
 
@@ -341,9 +339,9 @@ plot_output(data, output, 'Leaky ReLU')
 
 Given a vector $Z$ of raw class scores from the final layer of a neural network, the softmax function $\sigma(Z)_j$ for a class $j$ is calculated as:
 
-\begin{align}
+$$
 \sigma(Z)_j = \frac{e^{Z_j}}{\sum_{k=1}^{K}e^{Z_k}}
-\end{align}
+$$
 
 where:
 - $e$ is the base of the natural logarithm,
@@ -390,9 +388,9 @@ plot_output(data, output, 'Softmax')
 ### Formula
 
 The mathematical formula for SoftPlus is:
-\begin{align}
+$$
 SoftPlus(x) = \ln(1 + \exp(x))
-\end{align}
+$$
 
 This function takes any real number $x$ as input and returns the natural logarithm of 1 plus the exponential of $x$.
 
@@ -449,28 +447,28 @@ plot_output(data, output, 'SoftPlus')
 
 The ELU function is defined as follows:
 
-\begin{align}
+$$
 ELU(x) = 
 \begin{cases} 
 x & \text{if } x > 0 \\
 \alpha(e^x - 1) & \text{if } x \leq 0 
 \end{cases}
-\end{align}
+$$
 
 where:
 - $x$ is the input to the function,
-- $\alpha$ is a hyperparameter that defines the value that ELU approaches when $ x $ is a large negative number.
+- $\alpha$ is a hyperparameter that defines the value that ELU approaches when $x$ is a large negative number.
 
 ### What are the advantages and disadvantages of ELU?
 
 #### Advantages:
 1. **Reduction of Vanishing Gradient Problem**: Like ReLU and its variants, ELU helps in mitigating the vanishing gradient issue, but with a smoother transition for negative input values.
 2. **Better Performance for Deep Networks**: ELU can help deep neural networks learn faster and perform better by introducing non-linearity without significantly hindering the learning of patterns in data.
-3. **Continuity for All Input Values**: ELU is continuous and differentiable at all points, including $ x=0 $, which aids in more stable and efficient gradient descent optimization.
+3. **Continuity for All Input Values**: ELU is continuous and differentiable at all points, including $x=0$, which aids in more stable and efficient gradient descent optimization.
 
 #### Disadvantages:
 1. **Computational Complexity**: The use of the exponential function makes ELU computationally more intensive than ReLU or LeakyReLU, potentially slowing down the training process.
-2. **Parameter Tuning**: The $ \alpha $ parameter needs to be chosen carefully. While a default value of 1 is commonly used, different settings might be required based on the specific application or dataset, adding to the complexity of model design.
+2. **Parameter Tuning**: The $\alpha$ parameter needs to be chosen carefully. While a default value of 1 is commonly used, different settings might be required based on the specific application or dataset, adding to the complexity of model design.
 3. **Not Zero-Centered for Positive Inputs**: Similar to ReLU, the output of ELU for positive inputs is not zero-centered, which can potentially affect the convergence rate of gradient descent algorithms.
 ---
 
@@ -506,9 +504,9 @@ plot_output(data, output, 'ELU')
 
 The Mish function is defined by the formula:
 
-\begin{align}
+$$
 \text{Mish}(x) = x \tanh(\ln(1 + e^x))
-\end{align}
+$$
 
 where:
 - $x$ is the input to the function,
@@ -560,9 +558,9 @@ plot_output(data, output, 'Mish')
 
 The GELU function can be approximated by the following formula:
 
-\begin{align}
+$$
 \text{GELU}(x) = x \Phi(x)
-\end{align}
+$$
 
 where:
 - $x$ is the input to the function,
@@ -617,9 +615,9 @@ plot_output(data, output, 'GELU')
 
 The mathematical formula for the Swish function is:
 
-\begin{align}
+$$
 \text{Swish}(x) = x \cdot \sigma(x)
-\end{align}
+$$
 
 where:
 - $x$ is the input to the function,
@@ -646,17 +644,11 @@ where:
 
 class Swish(nn.Module):
     def __init__(self,beta):
-        """
-        Init method.
-        """
         super(Swish, self).__init__()
         self.beta = beta
         
 
     def forward(self, input):
-        """
-        Forward pass of the function.
-        """
         return input * torch.sigmoid(input * self.beta)
     
 
@@ -671,9 +663,3 @@ plot_output(data, output, 'Swish')
     
 <img src="{{site.url}}/assets/img/activation-plots/swish.png" style="display: block; margin: auto;" />
     
-
-
-
-```python
-
-```
