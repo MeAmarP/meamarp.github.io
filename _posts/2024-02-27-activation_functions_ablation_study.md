@@ -1,10 +1,13 @@
 ---
 layout: post
-title: "Learning-By-Doing Series: Understanding activation functions"
+title: "LearningByDoing Series: Understanding effects of activation functions"
 author: "Amar P"
 categories: journal
-tags: [neural-networks,fundamentals]
+tags: [neural-networks,fundamentals,LearningByDoing]
 ---
+
+[![Colab badge](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.14.0-orange.svg)](https://pytorch.org/)
 
 ## Ablation study: Activation functions
 
