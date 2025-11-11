@@ -1,4 +1,10 @@
-# Workflow and Agent Patterns for Intelligent Systems
+---
+layout: post
+title: "Workflow and Agent Patterns for Intelligent Systems"
+author: "Amar P"
+categories: journal
+tags: [LLM,fundamentals,AIAgents]
+---
 
 ## Overview  
 This guide explores how intelligent systems can be structured using **workflows** (deterministic flows) and **agents** (autonomous decision-makers).  
