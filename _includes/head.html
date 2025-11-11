@@ -27,6 +27,29 @@
         }
       });
   </script>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.css"
+    integrity="sha512-zu1x8NFOxSBwPNmqXBvQEVpWP7SlgvzV4FwFG85VUOHu4/AzxIiY3EUdpAZgscoLp3oMrVJba3yPOwAYOCIOSg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <script defer
+    src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"
+    integrity="sha512-45U5FxydjIS+B4C52i+5lFj2S+wJyYMGd9Tx4NXTh+iFEGYf9t5Be+j8oOPkmeMZpU2mI/NGeHmpQ1+7zEGqhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var blocks = document.querySelectorAll('pre > code.language-mermaid');
+      if (!blocks.length || !window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' });
+      blocks.forEach(function (code) {
+        var pre = code.parentElement;
+        var wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = code.textContent.trim();
+        pre.parentElement.replaceChild(wrapper, pre);
+      });
+      mermaid.run({});
+    });
+  </script>
   <!-- Google Analytics -->
   {% include google-analytics.html %}
   <!-- Use Jekyll SEO plugin -->
