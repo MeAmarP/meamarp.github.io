@@ -1,0 +1,56 @@
+<!-- Mermaid loader for GitHub Pages without unsupported plugins -->
+<script type="module">
+  const selector = "pre code.language-mermaid, code.language-mermaid, .language-mermaid";
+  const blocks = Array.from(document.querySelectorAll(selector));
+  if (!blocks.length) {
+    // No diagrams on this page; skip loading the library.
+    return;
+  }
+
+  import("https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs").then(({ default: mermaid }) => {
+    mermaid.initialize({ startOnLoad: false, securityLevel: "strict" });
+
+    blocks.forEach((codeEl) => {
+      const diagramText = codeEl.textContent;
+      const pre = codeEl.closest("pre");
+      const container = document.createElement("div");
+      container.className = "mermaid";
+      container.textContent = diagramText;
+
+      if (pre) {
+        pre.replaceWith(container);
+      } else {
+        codeEl.replaceWith(container);
+      }
+    });
+
+    mermaid.run();
+  });
+</script>
+
+<!-- Fallback for browsers without ES module support -->
+<script nomodule src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script nomodule>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (!window.mermaid) return;
+    var blocks = document.querySelectorAll("pre code.language-mermaid, code.language-mermaid, .language-mermaid");
+    if (!blocks.length) return;
+
+    blocks.forEach(function (codeEl) {
+      var diagramText = codeEl.textContent;
+      var pre = codeEl.closest("pre");
+      var container = document.createElement("div");
+      container.className = "mermaid";
+      container.textContent = diagramText;
+
+      if (pre) {
+        pre.replaceWith(container);
+      } else {
+        codeEl.replaceWith(container);
+      }
+    });
+
+    mermaid.initialize({ startOnLoad: false, securityLevel: "strict" });
+    mermaid.run();
+  });
+</script>
