@@ -33,8 +33,61 @@
   <!-- Mermaid for diagram rendering -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
-    if (typeof mermaid !== 'undefined') {
-      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'strict' });
+    function initMermaid() {
+      if (typeof mermaid === 'undefined') {
+        console.warn('Mermaid library not loaded');
+        return;
+      }
+      
+      mermaid.initialize({ 
+        startOnLoad: false, 
+        theme: 'default', 
+        securityLevel: 'strict',
+        logLevel: 'error'
+      });
+      
+      // More comprehensive selectors for Jekyll code blocks
+      const selectors = [
+        'pre code.language-mermaid',      // Jekyll standard
+        'div.language-mermaid',           // Alternative Jekyll format
+        'pre.mermaid',                    // Direct pre with mermaid class
+        'code.language-mermaid'           // Direct code blocks
+      ];
+      
+      let rendered = 0;
+      selectors.forEach(selector => {
+        const blocks = document.querySelectorAll(selector);
+        blocks.forEach(block => {
+          if (block.closest('.mermaid')) return; // Skip if already converted
+          
+          const text = block.textContent.trim();
+          if (!text) return;
+          
+          const container = document.createElement('div');
+          container.className = 'mermaid';
+          container.textContent = text;
+          
+          // Replace the block with container
+          if (block.tagName === 'CODE') {
+            const pre = block.closest('pre');
+            pre ? pre.replaceWith(container) : block.replaceWith(container);
+          } else {
+            block.replaceWith(container);
+          }
+          rendered++;
+        });
+      });
+      
+      if (rendered > 0) {
+        mermaid.run();
+      }
+    }
+    
+    // Wait for page to be fully loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMermaid);
+    } else {
+      initMermaid();
     }
   </script>
   
