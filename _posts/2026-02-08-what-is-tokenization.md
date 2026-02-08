@@ -6,7 +6,6 @@ categories: journal
 tags: [llm-series, language-models]
 ---
 
-# What is Tokenization & Why LLMs Don't See Words
 >"Everything should be made as simple as possible, but not simpler."
 >— Albert Einstein
 
