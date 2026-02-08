@@ -118,7 +118,7 @@ This leads to an enormous vocabulary size, making the model large and inefficien
 ### Problem 2: Out-of-Vocabulary (OOV) Words
 Suppose the model never saw this word during training:
 
-```electroencephalography```
+`electroencephalography`
 
 With word-level tokenization, the model would have no way to represent this unseen word, leading to OOV issues.
 
