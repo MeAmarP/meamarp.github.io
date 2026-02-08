@@ -66,6 +66,7 @@ Mapped to Token IDs:
 
 ### High-level LLM input pipeline
 Notice how LLMs process text inputs:
+
 ```mermaid
 flowchart LR
     A[Raw Text Input] --> B[Tokenizer]
@@ -73,6 +74,7 @@ flowchart LR
     C --> D[Embedding Layer]
     D --> E[Transformer Blocks]
 ```
+
 Tokenization happens right at the start of the LLM input.
 
 The model never sees raw text, it only sees token IDs.
@@ -153,6 +155,7 @@ Modern LLMs use **subword tokenization**.
 Instead of treating words as atomic units, subword tokenization breaks texts into frequently occurring pieces.
 
 **Conceptual View:**
+
 ```mermaid
 flowchart LR
     A[Text Corpus] --> B[Frequent Sub-word Patterns]
