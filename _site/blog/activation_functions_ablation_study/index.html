@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]--><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<title>LearningByDoing Series: Understanding effects of activation functions</title>
+
+	<!-- Open Graph Meta -->
+	<meta content="AMAR POTDAR" property="og:site_name" /><meta content="LearningByDoing Series: Understanding effects of activation functions" property="og:title" /><meta content="article" property="og:type" /><meta content="Thoughts, Experiences, Projects" property="og:description" /><meta content="http://0.0.0.0:4000/blog/activation_functions_ablation_study/" property="og:url" /><meta
+		content="2024-02-27T00:00:00+05:30"
+		property="article:published_time"
+	/>
+	<meta content="http://0.0.0.0:4000/about/" property="article:author" /><meta
+		content="http://0.0.0.0:4000/assets/img/touring.jpg"
+		property="og:image"
+	/><!-- Twitter Cards -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@" />
+	<meta name="twitter:creator" content="@" /><meta name="twitter:title" content="LearningByDoing Series: Understanding effects of activation functions" /><meta name="twitter:url" content="http://0.0.0.0:4000/blog/activation_functions_ablation_study/" /><meta name="twitter:description" content="Thoughts, Experiences, Projects" /><meta
+		name="twitter:image:src"
+		content="http://0.0.0.0:4000/assets/img/touring.jpg"
+	/><!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href=""/>
+
+	<!-- Come and get me RSS readers -->
+	<link rel="alternate" type="application/rss+xml" title="AMAR POTDAR"
+	href="http://0.0.0.0:4000/feed.xml" />
+
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="/assets/css/style.css" />
+
+	<!-- Canonical URL -->
+	<link
+		rel="canonical"
+		href="http://0.0.0.0:4000/blog/activation_functions_ablation_study/"
+	/><!-- Mermaid Diagram Library -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  
+  // Convert code blocks with language-mermaid to mermaid divs
+  document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('code.language-mermaid');
+    codeBlocks.forEach(block => {
+      const pre = block.parentElement;
+      const code = block.textContent;
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = code;
+      pre.replaceWith(div);
+    });
+    mermaid.contentLoaded();
+  });
+</script>
+</head>
+<body> <div class="header ">
+     <div class="container">
+         <h1 class="logo"><a href="/">AMAR POTDAR</a></h1>
+         <nav class="nav-collapse">
+             <ul class="noList"><li class="elementfirst">
+                     <a href="/index.html">Home</a>
+                 </li><li class="element">
+                     <a href="/about">About</a>
+                 </li><li class="elementlast">
+                     <a href="/contact">Contact</a>
+                 </li><li> <a href="https://github.com/MeAmarP" target="_blank">GitHub</a></li>
+             </ul>
+         </nav>
+     </div>
+ </div><!-- end .header -->
+<div class="content">
+      <div class="container">
+         <article class="post"><header>
+    <h1 class="postTitle">LearningByDoing Series: Understanding effects of activation functions</h1>
+    <p class="meta">February 27, 2024 | <span class="time">22</span> Minute Read</p>
+  </header>
+
+  <p><a href="https://colab.research.google.com/"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Colab badge" /></a>
+<a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-1.14.0-orange.svg" alt="PyTorch" /></a></p>
+
+<h2 id="ablation-study-activation-functions">Ablation study: Activation functions</h2>
+
+<p><strong>Goal here is to observ or record changes in accuracy, loss, or other performance indicators.</strong></p>
+<ul>
+  <li>Activation Functions under consideration
+    <ul>
+      <li><strong>Sigmoid</strong></li>
+      <li><strong>Tanh</strong></li>
+      <li><strong>ReLU</strong></li>
+      <li><strong>LeakyReLU</strong></li>
+      <li><strong>ELU</strong></li>
+      <li><strong>SELU</strong></li>
+      <li><strong>Softplus</strong></li>
+      <li><strong>Mish</strong></li>
+      <li><strong>GELU</strong></li>
+      <li><strong>Swish</strong></li>
+    </ul>
+  </li>
+  <li>We are using <strong>ResNet-18 model</strong> with <strong>CIFAR-10 dataset</strong></li>
+  <li>Defined ResNet model accepts activatio function as argument in constructor</li>
+  <li>We are keeping following config constant for experiement.
+    <ul>
+      <li><strong>Loss function : CrossEntropyLoss()</strong></li>
+      <li><strong>Optimizer : Adam</strong></li>
+      <li><strong>Learning Rate : 0.01</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># import required libs
+</span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">ConcatDataset</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</code></pre></div></div>
+
+<h3 id="load-cifar-10-dataset">Load CIFAR-10 dataset</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))])</span>
+
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">CIFAR10</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">'./data'</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">CIFAR10</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">'./data'</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">test_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="define-resnet-18-model">Define ResNet-18 Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">Block</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">identity_downsample</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Block</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identity_downsample</span> <span class="o">=</span> <span class="n">identity_downsample</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">identity</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">identity_downsample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">identity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identity_downsample</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">identity</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+    
+
+<span class="k">class</span> <span class="nc">ResNet_18</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResNet_18</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">=</span> <span class="mi">64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">image_channels</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxpool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">#resnet layers
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_layer</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_layer</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_layer</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_layer</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">avgpool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__make_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+
+        <span class="n">identity_downsample</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">stride</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">identity_downsample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identity_downsample</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">Block</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">identity_downsample</span><span class="o">=</span><span class="n">identity_downsample</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">),</span>
+            <span class="n">Block</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxpool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer4</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">avgpool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">identity_downsample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">)</span>
+        <span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="define-train-and-test-function-to-record-loss-and-accuracy-over-epochs">Define Train and test function to record loss and accuracy over epochs</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># 3. Training and Testing functions
+</span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">total_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="k">return</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">),</span> <span class="n">accuracy</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="k">return</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_loader</span><span class="p">),</span> <span class="n">accuracy</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># 4. Plot Loss and Accuracy
+</span><span class="k">def</span> <span class="nf">plot_loss_and_accuracy</span><span class="p">(</span><span class="n">train_loss</span><span class="p">,</span> <span class="n">test_loss</span><span class="p">,</span> <span class="n">train_accuracy</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">train_loss</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Training Loss'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Epoch'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Loss'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">test_loss</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Test Loss'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Epoch'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Loss'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">train_accuracy</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Training Accuracy'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Epoch'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Accuracy'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">test_accuracy</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Test Accuracy'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Epoch'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Accuracy'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># plt.tight_layout()
+</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<h3 id="integrated-train-test-plot-for-each-activation-function">Integrated train-test-plot for each activation function</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">NUM_EPOCHS</span> <span class="o">=</span> <span class="mi">10</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">train_and_test</span><span class="p">(</span><span class="n">activation_functions</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="n">NUM_EPOCHS</span><span class="p">):</span>
+    <span class="n">train_loss_history</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="n">test_loss_history</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="n">train_accuracy_history</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="n">test_accuracy_history</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+        
+    <span class="k">for</span> <span class="n">activation_name</span><span class="p">,</span> <span class="n">activation</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Running with {activation_name} activation"</span><span class="p">)</span>
+        
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ResNet_18</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">)</span>
+        
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+            
+            <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+            <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Epoch {epoch + 1}/{num_epochs}: Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy * 100:.2f}</span><span class="si">%</span><span class="s">, Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy * 100:.2f}</span><span class="si">%</span><span class="s">'</span><span class="p">)</span>
+
+            <span class="n">train_loss_history</span><span class="p">[</span><span class="n">activation_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+            <span class="n">test_loss_history</span><span class="p">[</span><span class="n">activation_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_loss</span><span class="p">)</span>
+            <span class="n">train_accuracy_history</span><span class="p">[</span><span class="n">activation_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_accuracy</span><span class="p">)</span>
+            <span class="n">test_accuracy_history</span><span class="p">[</span><span class="n">activation_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_accuracy</span><span class="p">)</span>
+
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">total_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Total time taken for training and testing: {total_time:.2f} seconds'</span><span class="p">)</span>
+
+    <span class="n">plot_loss_and_accuracy</span><span class="p">(</span><span class="n">train_loss_history</span><span class="p">,</span> <span class="n">test_loss_history</span><span class="p">,</span> <span class="n">train_accuracy_history</span><span class="p">,</span> <span class="n">test_accuracy_history</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">Swish</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="s">"""Swish activation function
+
+    Args:
+        beta (float): beta parameter of the activation function
+    """</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="s">"""
+        Init method.
+        """</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Swish</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="s">"""
+        Forward pass of the function.
+        """</span>
+        <span class="k">return</span> <span class="nb">input</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="nb">input</span><span class="p">)</span>
+
+<span class="n">activation_functions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'Sigmoid'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">(),</span>
+    <span class="s">'Tanh'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+    <span class="s">'ReLU'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+    <span class="s">'LeakyReLU'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="s">'ELU'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">ELU</span><span class="p">(),</span>
+    <span class="s">'SELU'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">SELU</span><span class="p">(),</span>
+    <span class="s">'Softplus'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">(),</span>
+    <span class="s">'Mish'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Mish</span><span class="p">(),</span>
+    <span class="s">'GELU'</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">GELU</span><span class="p">(),</span>
+    <span class="s">'Swish'</span><span class="p">:</span> <span class="n">Swish</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="c1"># Set device (CPU/GPU)
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="c1"># Define loss function and optimizer
+</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="c1"># Instantiate the model with different activation functions
+</span><span class="n">train_and_test</span><span class="p">(</span><span class="n">activation_functions</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Running with Sigmoid activation
+Epoch 1/10: Train Loss: 1.7626, Train Accuracy: 34.99%, Test Loss: 2.6261, Test Accuracy: 16.52%
+Epoch 2/10: Train Loss: 1.3528, Train Accuracy: 50.40%, Test Loss: 2.8638, Test Accuracy: 35.46%
+Epoch 3/10: Train Loss: 1.1619, Train Accuracy: 58.13%, Test Loss: 2.4072, Test Accuracy: 27.71%
+Epoch 4/10: Train Loss: 1.0359, Train Accuracy: 63.06%, Test Loss: 3.3053, Test Accuracy: 30.67%
+Epoch 5/10: Train Loss: 0.9533, Train Accuracy: 66.18%, Test Loss: 1.1353, Test Accuracy: 60.65%
+Epoch 6/10: Train Loss: 0.8886, Train Accuracy: 68.72%, Test Loss: 3.8299, Test Accuracy: 42.87%
+Epoch 7/10: Train Loss: 0.8320, Train Accuracy: 70.79%, Test Loss: 3.1457, Test Accuracy: 30.49%
+Epoch 8/10: Train Loss: 0.7806, Train Accuracy: 72.56%, Test Loss: 3.3456, Test Accuracy: 26.51%
+Epoch 9/10: Train Loss: 0.7352, Train Accuracy: 74.09%, Test Loss: 2.7374, Test Accuracy: 36.82%
+Epoch 10/10: Train Loss: 0.6933, Train Accuracy: 75.80%, Test Loss: 2.2359, Test Accuracy: 39.73%
+Total time taken for training and testing: 154.31 seconds
+Running with Tanh activation
+Epoch 1/10: Train Loss: 1.8240, Train Accuracy: 33.67%, Test Loss: 1.5043, Test Accuracy: 45.20%
+Epoch 2/10: Train Loss: 1.3771, Train Accuracy: 50.35%, Test Loss: 1.2400, Test Accuracy: 54.29%
+Epoch 3/10: Train Loss: 1.1568, Train Accuracy: 58.75%, Test Loss: 1.0773, Test Accuracy: 61.71%
+Epoch 4/10: Train Loss: 1.0035, Train Accuracy: 64.56%, Test Loss: 1.0530, Test Accuracy: 63.07%
+Epoch 5/10: Train Loss: 0.8909, Train Accuracy: 68.73%, Test Loss: 0.9397, Test Accuracy: 67.07%
+Epoch 6/10: Train Loss: 0.8053, Train Accuracy: 71.69%, Test Loss: 0.8754, Test Accuracy: 69.44%
+Epoch 7/10: Train Loss: 0.7312, Train Accuracy: 74.40%, Test Loss: 0.8848, Test Accuracy: 69.73%
+Epoch 8/10: Train Loss: 0.6683, Train Accuracy: 76.73%, Test Loss: 0.7996, Test Accuracy: 73.06%
+Epoch 9/10: Train Loss: 0.6000, Train Accuracy: 78.94%, Test Loss: 0.8625, Test Accuracy: 71.83%
+Epoch 10/10: Train Loss: 0.5454, Train Accuracy: 80.98%, Test Loss: 0.8071, Test Accuracy: 73.30%
+Total time taken for training and testing: 153.26 seconds
+Running with ReLU activation
+Epoch 1/10: Train Loss: 1.7158, Train Accuracy: 39.29%, Test Loss: 1.3906, Test Accuracy: 49.69%
+Epoch 2/10: Train Loss: 1.1611, Train Accuracy: 58.22%, Test Loss: 1.1081, Test Accuracy: 61.40%
+Epoch 3/10: Train Loss: 0.9100, Train Accuracy: 68.14%, Test Loss: 0.9016, Test Accuracy: 68.86%
+Epoch 4/10: Train Loss: 0.7712, Train Accuracy: 73.01%, Test Loss: 0.8109, Test Accuracy: 71.62%
+Epoch 5/10: Train Loss: 0.6659, Train Accuracy: 76.60%, Test Loss: 0.7933, Test Accuracy: 72.74%
+Epoch 6/10: Train Loss: 0.5758, Train Accuracy: 80.11%, Test Loss: 0.8060, Test Accuracy: 72.81%
+Epoch 7/10: Train Loss: 0.4875, Train Accuracy: 83.03%, Test Loss: 0.7568, Test Accuracy: 76.06%
+Epoch 8/10: Train Loss: 0.4092, Train Accuracy: 85.63%, Test Loss: 0.7876, Test Accuracy: 75.12%
+Epoch 9/10: Train Loss: 0.3337, Train Accuracy: 88.33%, Test Loss: 0.8362, Test Accuracy: 74.68%
+Epoch 10/10: Train Loss: 0.2761, Train Accuracy: 90.35%, Test Loss: 0.8497, Test Accuracy: 75.54%
+Total time taken for training and testing: 152.85 seconds
+Running with LeakyReLU activation
+Epoch 1/10: Train Loss: 1.7220, Train Accuracy: 38.67%, Test Loss: 1.4768, Test Accuracy: 45.44%
+Epoch 2/10: Train Loss: 1.1572, Train Accuracy: 58.65%, Test Loss: 2.6726, Test Accuracy: 53.20%
+Epoch 3/10: Train Loss: 0.9750, Train Accuracy: 65.82%, Test Loss: 0.9273, Test Accuracy: 68.11%
+Epoch 4/10: Train Loss: 0.8102, Train Accuracy: 71.71%, Test Loss: 0.8316, Test Accuracy: 71.77%
+Epoch 5/10: Train Loss: 0.6997, Train Accuracy: 75.38%, Test Loss: 0.8028, Test Accuracy: 72.99%
+Epoch 6/10: Train Loss: 0.6086, Train Accuracy: 78.83%, Test Loss: 0.8065, Test Accuracy: 72.91%
+Epoch 7/10: Train Loss: 0.5290, Train Accuracy: 81.78%, Test Loss: 0.7920, Test Accuracy: 73.87%
+Epoch 8/10: Train Loss: 0.4433, Train Accuracy: 84.49%, Test Loss: 0.8443, Test Accuracy: 73.31%
+Epoch 9/10: Train Loss: 0.3747, Train Accuracy: 86.91%, Test Loss: 0.8515, Test Accuracy: 75.20%
+Epoch 10/10: Train Loss: 0.3126, Train Accuracy: 89.00%, Test Loss: 0.8525, Test Accuracy: 74.54%
+Total time taken for training and testing: 151.19 seconds
+Running with ELU activation
+Epoch 1/10: Train Loss: 1.6000, Train Accuracy: 41.73%, Test Loss: 1.3051, Test Accuracy: 53.62%
+Epoch 2/10: Train Loss: 1.1131, Train Accuracy: 60.54%, Test Loss: 1.0528, Test Accuracy: 62.47%
+Epoch 3/10: Train Loss: 0.8960, Train Accuracy: 68.65%, Test Loss: 0.9562, Test Accuracy: 67.44%
+Epoch 4/10: Train Loss: 0.7710, Train Accuracy: 72.98%, Test Loss: 0.7960, Test Accuracy: 72.31%
+Epoch 5/10: Train Loss: 0.6540, Train Accuracy: 77.34%, Test Loss: 0.7497, Test Accuracy: 74.41%
+Epoch 6/10: Train Loss: 0.5588, Train Accuracy: 80.63%, Test Loss: 0.8036, Test Accuracy: 73.81%
+Epoch 7/10: Train Loss: 0.4663, Train Accuracy: 83.76%, Test Loss: 0.8054, Test Accuracy: 74.34%
+Epoch 8/10: Train Loss: 0.3850, Train Accuracy: 86.53%, Test Loss: 0.8055, Test Accuracy: 75.07%
+Epoch 9/10: Train Loss: 0.3058, Train Accuracy: 89.37%, Test Loss: 0.8819, Test Accuracy: 74.79%
+Epoch 10/10: Train Loss: 0.2513, Train Accuracy: 91.44%, Test Loss: 1.0102, Test Accuracy: 74.38%
+Total time taken for training and testing: 156.92 seconds
+Running with SELU activation
+Epoch 1/10: Train Loss: 1.6541, Train Accuracy: 40.84%, Test Loss: 1.3572, Test Accuracy: 50.76%
+Epoch 2/10: Train Loss: 1.1416, Train Accuracy: 59.50%, Test Loss: 1.0852, Test Accuracy: 62.17%
+Epoch 3/10: Train Loss: 0.9409, Train Accuracy: 66.86%, Test Loss: 1.0228, Test Accuracy: 65.13%
+Epoch 4/10: Train Loss: 0.8070, Train Accuracy: 71.54%, Test Loss: 0.8711, Test Accuracy: 69.76%
+Epoch 5/10: Train Loss: 0.7096, Train Accuracy: 75.23%, Test Loss: 0.9055, Test Accuracy: 70.49%
+Epoch 6/10: Train Loss: 0.6232, Train Accuracy: 78.18%, Test Loss: 0.7562, Test Accuracy: 74.18%
+Epoch 7/10: Train Loss: 0.5383, Train Accuracy: 81.32%, Test Loss: 0.8189, Test Accuracy: 73.53%
+Epoch 8/10: Train Loss: 0.4728, Train Accuracy: 83.56%, Test Loss: 0.7818, Test Accuracy: 75.53%
+Epoch 9/10: Train Loss: 0.3952, Train Accuracy: 86.16%, Test Loss: 0.8987, Test Accuracy: 73.73%
+Epoch 10/10: Train Loss: 0.3350, Train Accuracy: 88.34%, Test Loss: 0.8563, Test Accuracy: 75.29%
+Total time taken for training and testing: 152.71 seconds
+Running with Softplus activation
+Epoch 1/10: Train Loss: 1.8854, Train Accuracy: 34.93%, Test Loss: 1.5127, Test Accuracy: 44.74%
+Epoch 2/10: Train Loss: 1.2166, Train Accuracy: 56.79%, Test Loss: 1.1173, Test Accuracy: 60.46%
+Epoch 3/10: Train Loss: 0.9857, Train Accuracy: 65.13%, Test Loss: 1.0494, Test Accuracy: 64.43%
+Epoch 4/10: Train Loss: 0.8497, Train Accuracy: 70.10%, Test Loss: 0.9086, Test Accuracy: 69.11%
+Epoch 5/10: Train Loss: 0.7413, Train Accuracy: 74.02%, Test Loss: 0.8447, Test Accuracy: 70.95%
+Epoch 6/10: Train Loss: 0.6546, Train Accuracy: 76.98%, Test Loss: 0.8557, Test Accuracy: 70.71%
+Epoch 7/10: Train Loss: 0.5722, Train Accuracy: 79.72%, Test Loss: 0.7750, Test Accuracy: 74.69%
+Epoch 8/10: Train Loss: 0.4908, Train Accuracy: 82.66%, Test Loss: 0.8189, Test Accuracy: 73.30%
+Epoch 9/10: Train Loss: 0.4104, Train Accuracy: 85.48%, Test Loss: 0.8777, Test Accuracy: 74.23%
+Epoch 10/10: Train Loss: 0.3468, Train Accuracy: 87.63%, Test Loss: 0.8002, Test Accuracy: 76.09%
+Total time taken for training and testing: 154.65 seconds
+Running with Mish activation
+Epoch 1/10: Train Loss: 1.7003, Train Accuracy: 39.14%, Test Loss: 1.3325, Test Accuracy: 51.16%
+Epoch 2/10: Train Loss: 1.1959, Train Accuracy: 57.22%, Test Loss: 1.3133, Test Accuracy: 54.21%
+Epoch 3/10: Train Loss: 1.0379, Train Accuracy: 63.33%, Test Loss: 1.0978, Test Accuracy: 63.63%
+Epoch 4/10: Train Loss: 0.8866, Train Accuracy: 69.08%, Test Loss: 0.8707, Test Accuracy: 70.11%
+Epoch 5/10: Train Loss: 0.7194, Train Accuracy: 74.65%, Test Loss: 0.8252, Test Accuracy: 71.92%
+Epoch 6/10: Train Loss: 0.6115, Train Accuracy: 78.71%, Test Loss: 0.7833, Test Accuracy: 73.93%
+Epoch 7/10: Train Loss: 0.5023, Train Accuracy: 82.60%, Test Loss: 0.8402, Test Accuracy: 72.62%
+Epoch 8/10: Train Loss: 0.4273, Train Accuracy: 84.96%, Test Loss: 1.0618, Test Accuracy: 70.38%
+Epoch 9/10: Train Loss: 0.3230, Train Accuracy: 88.85%, Test Loss: 0.8752, Test Accuracy: 73.95%
+Epoch 10/10: Train Loss: 0.3492, Train Accuracy: 87.84%, Test Loss: 0.9737, Test Accuracy: 75.13%
+Total time taken for training and testing: 162.41 seconds
+Running with GELU activation
+Epoch 1/10: Train Loss: 1.7372, Train Accuracy: 37.46%, Test Loss: 1.3839, Test Accuracy: 49.43%
+Epoch 2/10: Train Loss: 1.1420, Train Accuracy: 59.31%, Test Loss: 1.0404, Test Accuracy: 64.37%
+Epoch 3/10: Train Loss: 0.9815, Train Accuracy: 65.16%, Test Loss: 1.0502, Test Accuracy: 62.14%
+Epoch 4/10: Train Loss: 0.8416, Train Accuracy: 70.36%, Test Loss: 0.9324, Test Accuracy: 68.07%
+Epoch 5/10: Train Loss: 0.7057, Train Accuracy: 75.38%, Test Loss: 0.8300, Test Accuracy: 71.26%
+Epoch 6/10: Train Loss: 0.6015, Train Accuracy: 79.01%, Test Loss: 0.7985, Test Accuracy: 73.44%
+Epoch 7/10: Train Loss: 0.5035, Train Accuracy: 82.51%, Test Loss: 0.7912, Test Accuracy: 73.74%
+Epoch 8/10: Train Loss: 0.4082, Train Accuracy: 85.73%, Test Loss: 0.8449, Test Accuracy: 74.16%
+Epoch 9/10: Train Loss: 0.3402, Train Accuracy: 88.30%, Test Loss: 0.8916, Test Accuracy: 73.97%
+Epoch 10/10: Train Loss: 0.2871, Train Accuracy: 89.97%, Test Loss: 0.9368, Test Accuracy: 73.92%
+Total time taken for training and testing: 150.29 seconds
+Running with Swish activation
+Epoch 1/10: Train Loss: 1.7318, Train Accuracy: 37.64%, Test Loss: 1.3979, Test Accuracy: 51.26%
+Epoch 2/10: Train Loss: 1.1694, Train Accuracy: 58.49%, Test Loss: 1.5716, Test Accuracy: 45.62%
+Epoch 3/10: Train Loss: 1.0223, Train Accuracy: 63.88%, Test Loss: 0.9294, Test Accuracy: 67.68%
+Epoch 4/10: Train Loss: 0.8995, Train Accuracy: 68.39%, Test Loss: 0.9304, Test Accuracy: 67.77%
+Epoch 5/10: Train Loss: 0.8207, Train Accuracy: 71.18%, Test Loss: 0.8368, Test Accuracy: 71.25%
+Epoch 6/10: Train Loss: 0.6815, Train Accuracy: 76.06%, Test Loss: 0.8100, Test Accuracy: 72.55%
+Epoch 7/10: Train Loss: 0.5747, Train Accuracy: 79.85%, Test Loss: 0.8057, Test Accuracy: 73.69%
+Epoch 8/10: Train Loss: 0.4812, Train Accuracy: 82.99%, Test Loss: 0.8506, Test Accuracy: 73.33%
+Epoch 9/10: Train Loss: 0.3622, Train Accuracy: 87.16%, Test Loss: 0.9636, Test Accuracy: 73.00%
+Epoch 10/10: Train Loss: 0.3020, Train Accuracy: 89.34%, Test Loss: 1.0346, Test Accuracy: 73.36%
+Total time taken for training and testing: 155.03 seconds
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-func-ablation.png" style="display: block; margin: auto;" /></p>
+
+
+
+  <!-- POST NAVIGATION -->
+  <footer class="postNav clearfix"><a class="prev image" href="/blog/cnn-series-0/"><span>&laquo;&nbsp;CNN Series:0</span><img src="/assets/img/mountains.jpg" alt=""></a><a class="next" href="/blog/non-linear-activation/"><span>LearningByDoing Series: Building Blocks of Neural Network - Activation Functions&nbsp;&raquo;</span></a></footer>
+</article>
+      </div>
+   </div><!-- end .content --><div class="footer">
+	<div class="container">
+		<p class="copy">
+			&copy; 2026
+			<a href="http://brianmaierjr.com">Brian Maier Jr.</a> Powered by
+			<a href="http://jekyllrb.com">Jekyll</a>
+		</p>
+
+		<div class="footer-links">
+			<ul class="noList"><li>
+	<a href="https://github.com/meamarp" target="_blank">
+		<svg
+			id="github"
+			class="custom-icon"
+			version="1.1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			viewBox="0 0 100 100"
+			style="height: 30px; width: 30px;"
+		>
+			<circle
+				class="outer-shape"
+				cx="50"
+				cy="50"
+				r="48"
+				style="opacity: 1;"
+			></circle>
+			<path
+				class="inner-shape"
+				style="opacity: 1;"
+				transform="translate(25,25) scale(0.5)"
+				d="M50,1C22.938,1,1,22.938,1,50s21.938,49,49,49s49-21.938,49-49S77.062,1,50,1z M79.099,79.099 c-3.782,3.782-8.184,6.75-13.083,8.823c-1.245,0.526-2.509,0.989-3.79,1.387v-7.344c0-3.86-1.324-6.699-3.972-8.517 c1.659-0.16,3.182-0.383,4.57-0.67c1.388-0.287,2.855-0.702,4.402-1.245c1.547-0.543,2.935-1.189,4.163-1.938 c1.228-0.75,2.409-1.723,3.541-2.919s2.082-2.552,2.847-4.067s1.372-3.334,1.818-5.455c0.446-2.121,0.67-4.458,0.67-7.01 c0-4.945-1.611-9.155-4.833-12.633c1.467-3.828,1.308-7.991-0.478-12.489l-1.197-0.143c-0.829-0.096-2.321,0.255-4.474,1.053 c-2.153,0.798-4.57,2.105-7.249,3.924c-3.797-1.053-7.736-1.579-11.82-1.579c-4.115,0-8.039,0.526-11.772,1.579 c-1.69-1.149-3.294-2.097-4.809-2.847c-1.515-0.75-2.727-1.26-3.637-1.532c-0.909-0.271-1.754-0.439-2.536-0.503 c-0.782-0.064-1.284-0.079-1.507-0.048c-0.223,0.031-0.383,0.064-0.478,0.096c-1.787,4.53-1.946,8.694-0.478,12.489 c-3.222,3.477-4.833,7.688-4.833,12.633c0,2.552,0.223,4.889,0.67,7.01c0.447,2.121,1.053,3.94,1.818,5.455 c0.765,1.515,1.715,2.871,2.847,4.067s2.313,2.169,3.541,2.919c1.228,0.751,2.616,1.396,4.163,1.938 c1.547,0.543,3.014,0.957,4.402,1.245c1.388,0.287,2.911,0.511,4.57,0.67c-2.616,1.787-3.924,4.626-3.924,8.517v7.487 c-1.445-0.43-2.869-0.938-4.268-1.53c-4.899-2.073-9.301-5.041-13.083-8.823c-3.782-3.782-6.75-8.184-8.823-13.083 C9.934,60.948,8.847,55.56,8.847,50s1.087-10.948,3.231-16.016c2.073-4.899,5.041-9.301,8.823-13.083s8.184-6.75,13.083-8.823 C39.052,9.934,44.44,8.847,50,8.847s10.948,1.087,16.016,3.231c4.9,2.073,9.301,5.041,13.083,8.823 c3.782,3.782,6.75,8.184,8.823,13.083c2.143,5.069,3.23,10.457,3.23,16.016s-1.087,10.948-3.231,16.016 C85.848,70.915,82.88,75.317,79.099,79.099L79.099,79.099z"
+			></path>
+		</svg>
+	</a>
+</li>
+</ul>
+		</div>
+	</div>
+</div>
+<!-- end .footer -->
+<!-- Add jQuery and other scripts -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src=/assets/js/jquery-1.11.2.min.js><\/script>')</script>
+<script src="/assets/js/dropcap.min.js"></script>
+<script src="/assets/js/responsive-nav.min.js"></script>
+<script src="/assets/js/scripts.js"></script>
+</body>
+
+</html>

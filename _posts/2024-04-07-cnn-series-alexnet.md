@@ -20,4 +20,4 @@ tags: [cnn-series,image-models]
 - Designed to **utilize GPUs**, which significantly sped up the training process.
 - AlexNet used **data augmentation** techniques such as image translations, horizontal reflections, and patch extractions to combat overfitting.
 
-<img src="{{site.url}}/assets/img/alexnet.jpg" style="display: block; margin: auto;" />
+<img src="/assets/img/alexnet.jpg" style="display: block; margin: auto;" />

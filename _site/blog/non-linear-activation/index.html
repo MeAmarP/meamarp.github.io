@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]--><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<title>LearningByDoing Series: Building Blocks of Neural Network - Activation Functions</title>
+
+	<!-- Open Graph Meta -->
+	<meta content="AMAR POTDAR" property="og:site_name" /><meta content="LearningByDoing Series: Building Blocks of Neural Network - Activation Functions" property="og:title" /><meta content="article" property="og:type" /><meta content="Thoughts, Experiences, Projects" property="og:description" /><meta content="http://0.0.0.0:4000/blog/non-linear-activation/" property="og:url" /><meta
+		content="2024-02-27T00:00:00+05:30"
+		property="article:published_time"
+	/>
+	<meta content="http://0.0.0.0:4000/about/" property="article:author" /><meta
+		content="http://0.0.0.0:4000/assets/img/touring.jpg"
+		property="og:image"
+	/><!-- Twitter Cards -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@" />
+	<meta name="twitter:creator" content="@" /><meta name="twitter:title" content="LearningByDoing Series: Building Blocks of Neural Network - Activation Functions" /><meta name="twitter:url" content="http://0.0.0.0:4000/blog/non-linear-activation/" /><meta name="twitter:description" content="Thoughts, Experiences, Projects" /><meta
+		name="twitter:image:src"
+		content="http://0.0.0.0:4000/assets/img/touring.jpg"
+	/><!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href=""/>
+
+	<!-- Come and get me RSS readers -->
+	<link rel="alternate" type="application/rss+xml" title="AMAR POTDAR"
+	href="http://0.0.0.0:4000/feed.xml" />
+
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="/assets/css/style.css" />
+
+	<!-- Canonical URL -->
+	<link
+		rel="canonical"
+		href="http://0.0.0.0:4000/blog/non-linear-activation/"
+	/><!-- Mermaid Diagram Library -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  
+  // Convert code blocks with language-mermaid to mermaid divs
+  document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('code.language-mermaid');
+    codeBlocks.forEach(block => {
+      const pre = block.parentElement;
+      const code = block.textContent;
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = code;
+      pre.replaceWith(div);
+    });
+    mermaid.contentLoaded();
+  });
+</script>
+</head>
+<body> <div class="header ">
+     <div class="container">
+         <h1 class="logo"><a href="/">AMAR POTDAR</a></h1>
+         <nav class="nav-collapse">
+             <ul class="noList"><li class="elementfirst">
+                     <a href="/index.html">Home</a>
+                 </li><li class="element">
+                     <a href="/about">About</a>
+                 </li><li class="elementlast">
+                     <a href="/contact">Contact</a>
+                 </li><li> <a href="https://github.com/MeAmarP" target="_blank">GitHub</a></li>
+             </ul>
+         </nav>
+     </div>
+ </div><!-- end .header -->
+<div class="content">
+      <div class="container">
+         <article class="post"><header>
+    <h1 class="postTitle">LearningByDoing Series: Building Blocks of Neural Network - Activation Functions</h1>
+    <p class="meta">February 27, 2024 | <span class="time">23</span> Minute Read</p>
+  </header>
+
+  <p><a href="https://colab.research.google.com/"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Colab badge" /></a>
+<a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-1.14.0-orange.svg" alt="PyTorch" /></a></p>
+
+<h2 id="activation-functions">Activation Functions:</h2>
+
+<ul>
+  <li><strong>Purpose:</strong>
+    <ul>
+      <li>Activation functions determine the output of a neural network node given an input or set of inputs, introducing non-linear properties to the network enabling them to learn complex patterns.</li>
+      <li>Activation functions help decide whether a neuron should be activated or not, influencing the network’s overall decision-making process.</li>
+    </ul>
+  </li>
+  <li><strong>Common functions</strong>
+    <ol>
+      <li>Sigmoid</li>
+      <li>Tanh</li>
+      <li>ReLU</li>
+      <li>Leaky ReLU</li>
+      <li>Softmax</li>
+      <li>ELU</li>
+      <li>Mish</li>
+      <li>GELU</li>
+      <li>SELU</li>
+      <li>Swish</li>
+    </ol>
+  </li>
+  <li><strong>Choice of Activation Function:</strong>
+    <ul>
+      <li>Depends on the specific application, the nature of the data, and the type of problem being solved.</li>
+      <li>For example, <em>ReLU</em> is often used for hidden layers due to its computational efficiency, while <em>softmax</em> is preferred for the output layer in classification tasks.</li>
+    </ul>
+  </li>
+  <li><strong>Challenges:</strong>
+    <ul>
+      <li>Each activation function has its own set of challenges, such as vanishing gradient problem with sigmoid and tanh, or the dying ReLU problem, where neurons stop learning entirely.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<h2 id="papers-for-activation-functions">Papers for Activation Functions</h2>
+<ol>
+  <li><strong>ReLU (Rectified Linear Unit)</strong>
+    <ul>
+      <li>Vinod Nair and Geoffrey E. Hinton, “<a href="https://www.cs.toronto.edu/~hinton/absps/reluICML.pdf">Rectified Linear Units Improve Restricted Boltzmann Machines</a>,” in Proceedings of the 27th International Conference on International Conference on Machine Learning (ICML’10), 2010.</li>
+    </ul>
+  </li>
+  <li><strong>Leaky ReLU</strong>
+    <ul>
+      <li>Andrew L. Maas, Awni Y. Hannun, and Andrew Y. Ng, “<a href="http://ai.stanford.edu/~amaas/papers/relu_hybrid_icml2013_final.pdf">Rectifier Nonlinearities Improve Neural Network Acoustic Models</a>,” in Proc. ICML, 2013.</li>
+    </ul>
+  </li>
+  <li><strong>ELU (Exponential Linear Unit)</strong>
+    <ul>
+      <li>Djork-Arné Clevert, Thomas Unterthiner, and Sepp Hochreiter, “<a href="https://arxiv.org/abs/1511.07289">Fast and Accurate Deep Network Learning by Exponential Linear Units (ELUs)</a>,” ICLR 2016.</li>
+    </ul>
+  </li>
+  <li><strong>Mish</strong>
+    <ul>
+      <li>Diganta Misra, “<a href="https://arxiv.org/abs/1908.08681">Mish: A Self Regularized Non-Monotonic Neural Activation Function</a>,” 2019.</li>
+    </ul>
+  </li>
+  <li><strong>GELU (Gaussian Error Linear Unit)</strong>
+    <ul>
+      <li>Dan Hendrycks and Kevin Gimpel, “<a href="https://arxiv.org/abs/1606.08415">Gaussian Error Linear Units (GELUs)</a>,” 2016.</li>
+    </ul>
+  </li>
+  <li><strong>SELU (Scaled Exponential Linear Unit)</strong>
+    <ul>
+      <li>Günter Klambauer, Thomas Unterthiner, Andreas Mayr, and Sepp Hochreiter, “<a href="https://arxiv.org/abs/1706.02515">Self-Normalizing Neural Networks</a>,” in Advances in Neural Information Processing Systems (NIPS) 2017.</li>
+    </ul>
+  </li>
+  <li><strong>Swish</strong>
+    <ul>
+      <li>Prajit Ramachandran, Barret Zoph, and Quoc V. Le, “<a href="https://arxiv.org/abs/1710.05941">Searching for Activation Functions</a>,” 2017.</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use GPU, if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span>
+<span class="k">print</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Method to plot output of activation functions
+</span><span class="k">def</span> <span class="nf">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+    <span class="s">"""
+    Plots the output of a activation function.
+    """</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">output</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s">'green'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"Input"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Output"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># sample data
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="sigmoid">Sigmoid</h2>
+
+<h3 id="what-is-the-sigmoid-function">What is the Sigmoid Function?</h3>
+
+<ul>
+  <li>Also known as the logistic function</li>
+  <li>Characterized by its S-shaped curve and is one of the earliest activation functions used in neural networks.</li>
+  <li>The function maps any real-valued number into a range between 0 and 1, making it especially useful for models where the output is a probability.</li>
+</ul>
+
+<h3 id="when-is-the-sigmoid-function-used">When is the Sigmoid Function Used?</h3>
+
+<ul>
+  <li>Primarily used in binary classification problems within neural networks, especially in the output layer.</li>
+</ul>
+
+<h3 id="what-is-the-math-formula-of-the-sigmoid-function">What is the Math Formula of the Sigmoid Function?</h3>
+
+<p>The mathematical formula of the Sigmoid function is:</p>
+
+<script type="math/tex; mode=display">\sigma(x) = \frac{1}{1 + e^{-x}}</script>
+
+<p>where:</p>
+<ul>
+  <li>$\sigma(x)$ is the output of the sigmoid function,</li>
+  <li>$ e $ is the base of the natural logarithm (approximately 2.71828),</li>
+  <li>$ x $ is the input to the function.</li>
+</ul>
+
+<h3 id="advantages-and-disadvantages-of-the-sigmoid-function">Advantages and Disadvantages of the Sigmoid Function</h3>
+
+<h4 id="advantages">Advantages:</h4>
+
+<ul>
+  <li><strong>Output Range</strong>: The output is bounded between 0 and 1, making it useful for interpreting the output as probabilities.</li>
+  <li><strong>Smooth Gradient</strong>: It provides a smooth gradient, essential for optimization using gradient descent.</li>
+</ul>
+
+<h4 id="disadvantages">Disadvantages:</h4>
+
+<ul>
+  <li><strong>Vanishing Gradient Problem</strong>: For very high or very low values of input, the Sigmoid function saturates, leading to gradients very close to 0. This makes the network hard to train, as it causes the gradient descent to update the weights very slowly.</li>
+  <li><strong>Not Zero-Centered</strong>: The output of the Sigmoid function is not zero-centered. This can lead to the gradient updates going too far in different directions, slowing down the learning process.</li>
+  <li><strong>Computational Expense</strong>: The exponential function present in the sigmoid function is computationally expensive compared to other activation functions like ReLU.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># Sigmoid activation function
+</span>
+<span class="n">sigmoid</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Sigmoid Activation'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/sigmoid.png" style="display: block; margin: auto;" /></p>
+
+<hr />
+
+<h2 id="tanh">Tanh</h2>
+
+<h3 id="what-is-the-tanh-function">What is the Tanh Function?</h3>
+
+<ul>
+  <li>Short for hyperbolic tangent function, is a type of activation function used in neural networks.</li>
+  <li>It is similar to the sigmoid function but maps the input values to a range between -1 and 1.</li>
+  <li>The Tanh function is symmetrical around the origin, which gives it some advantages in certain neural network architectures.</li>
+</ul>
+
+<h3 id="when-is-the-tanh-function-used">When is the Tanh Function Used?</h3>
+
+<ul>
+  <li>Used in hidden layers of a neural network because its outputs are zero-centered, making it easier for the model to converge during training.</li>
+</ul>
+
+<h3 id="what-is-the-math-formula-of-the-tanh-function">What is the Math Formula of the Tanh Function?</h3>
+
+<p>The mathematical formula of the Tanh function is:</p>
+
+<script type="math/tex; mode=display">\tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}</script>
+
+<p>where:</p>
+<ul>
+  <li>$\tanh(x)$ is the output of the Tanh function,</li>
+  <li>$e$ is the base of the natural logarithm (approximately 2.71828),</li>
+  <li>$x$ is the input to the function.</li>
+</ul>
+
+<h3 id="advantages-and-disadvantages-of-the-tanh-function">Advantages and Disadvantages of the Tanh Function</h3>
+
+<h4 id="advantages-1">Advantages:</h4>
+
+<ul>
+  <li><strong>Zero-Centered</strong>: Unlike the sigmoid function, the output of the Tanh function is zero-centered, which generally helps in making the learning phase more efficient for the network.</li>
+  <li><strong>Steep Gradient</strong>: The Tanh function has a steeper gradient than the sigmoid, which can lead to faster convergence in some cases.</li>
+</ul>
+
+<h4 id="disadvantages-1">Disadvantages:</h4>
+
+<ul>
+  <li><strong>Vanishing Gradient Problem</strong>: Similar to the sigmoid function, the Tanh function also suffers from the vanishing gradient problem for inputs with large absolute values, which can slow down the training or make it difficult for the network to learn.</li>
+  <li><strong>Computational Expense</strong>: The computation of the exponential function in the Tanh function can be relatively expensive, especially for deep neural networks with a large number of layers.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tanh</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>
+
+<span class="n">output</span> <span class="o">=</span>  <span class="n">tanh</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Tanh'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/tanh.png" style="display: block; margin: auto;" /></p>
+
+<hr />
+
+<h2 id="relu">ReLU</h2>
+
+<h3 id="what-is-the-relu-function">What is the ReLU Function?</h3>
+
+<ul>
+  <li>Standing for Rectified Linear Unit</li>
+  <li>Widely used activation function in neural networks, especially in deep learning models.</li>
+  <li>It is a piecewise linear function that outputs the input directly if it is positive; otherwise, it outputs zero.</li>
+  <li>It has become a default activation function for many types of neural networks because it introduces non-linearity with less likelihood of causing the vanishing gradient problem.</li>
+</ul>
+
+<h3 id="when-is-the-relu-function-used">When is the ReLU Function Used?</h3>
+
+<ul>
+  <li>Commonly used in the hidden layers of neural networks.</li>
+  <li>Its simplicity and efficiency make it suitable for networks with a large number of layers</li>
+</ul>
+
+<h3 id="what-is-the-math-formula-of-the-relu-function">What is the Math Formula of the ReLU Function?</h3>
+
+<p>The mathematical formula of the ReLU function is:</p>
+
+<script type="math/tex; mode=display">{ReLU}(x) = \max(0, x)</script>
+
+<p>where:</p>
+<ul>
+  <li>$x$ is the input to the function.</li>
+  <li>The output is $x$ if $x$ is greater than 0; otherwise, it is 0.</li>
+</ul>
+
+<h3 id="advantages-and-disadvantages-of-the-relu-function">Advantages and Disadvantages of the ReLU Function</h3>
+
+<h4 id="advantages-2">Advantages:</h4>
+
+<ul>
+  <li><strong>Computational Simplicity</strong>: The ReLU function is computationally efficient, allowing networks to converge faster during training.</li>
+  <li><strong>Sparsity</strong>: ReLU can lead to sparse representations, which are beneficial for neural networks, making them more efficient and easier to train.</li>
+  <li><strong>Reduces Likelihood of Vanishing Gradient</strong>: By providing a linear response for positive inputs, it reduces the chances of the vanishing gradient problem compared to sigmoid or tanh.</li>
+</ul>
+
+<h4 id="disadvantages-2">Disadvantages:</h4>
+
+<ul>
+  <li><strong>Dying ReLU Problem</strong>: If a large number of activations become negative, then the neuron might stop activating altogether, essentially causing part of the network to die.</li>
+  <li><strong>Not Zero-Centered Output</strong>: The output of ReLU is not zero-centered, which can sometimes be a drawback in optimization.</li>
+</ul>
+
+<hr />
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'ReLU'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/relu.png" style="display: block; margin: auto;" /></p>
+
+<hr />
+
+<h2 id="leakyrelu">LeakyReLU</h2>
+
+<h3 id="what-is-the-leakyrelu-function">What is the LeakyReLU Function?</h3>
+
+<ul>
+  <li>Stands for Leaky Rectified Linear Unit.</li>
+  <li>It is a variant of the ReLU function designed to allow a small, non-zero gradient when the unit is not active and the input is less than zero.</li>
+  <li>This modification aims to fix the “dying ReLU” problem, where neurons can sometimes become inactive and stop contributing to the learning process.</li>
+</ul>
+
+<h3 id="when-is-the-leakyrelu-function-used">When is the LeakyReLU Function Used?</h3>
+
+<ul>
+  <li>Used in the hidden layers of neural networks as an attempt to overcome the limitations of the traditional ReLU activation function.</li>
+  <li>It is particularly useful in deep learning models where the dying ReLU problem can impair the training process.</li>
+</ul>
+
+<h3 id="what-is-the-math-formula-of-the-leakyrelu-function">What is the Math Formula of the LeakyReLU Function?</h3>
+
+<p>The mathematical formula of the LeakyReLU function is:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+LeakyReLU(x) = \begin{cases}
+x & \text{if } x > 0 \\
+\alpha x & \text{if } x \leq 0
+\end{cases} %]]></script>
+
+<p>where:</p>
+<ul>
+  <li>$x$ is the input to the function,</li>
+  <li>$\alpha$ is a small constant (e.g., 0.01) that determines the slope of the function for $x\leq 0$.</li>
+</ul>
+
+<h3 id="advantages-and-disadvantages-of-the-leakyrelu-function">Advantages and Disadvantages of the LeakyReLU Function</h3>
+
+<h4 id="advantages-3">Advantages:</h4>
+
+<ul>
+  <li><strong>Mitigates the Dying ReLU Problem</strong>: By allowing a small gradient when $ x $ is less than zero, LeakyReLU ensures that all neurons have the opportunity to update and learn, reducing the risk of dead neurons during training.</li>
+  <li><strong>Improved Learning for Deep Networks</strong>: The slight gradient for negative input values can help maintain the flow of gradients through the network, improving the training of deep models.</li>
+</ul>
+
+<h4 id="disadvantages-3">Disadvantages:</h4>
+
+<ul>
+  <li><strong>Parameter Tuning</strong>: The effectiveness of LeakyReLU can depend on the choice of $\alpha$, which may require tuning for optimal performance.</li>
+  <li><strong>Increased Computational Complexity</strong>: While still relatively simple, LeakyReLU is slightly more complex than ReLU due to the additional operation for negative inputs.</li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">L_relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">L_relu</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Leaky ReLU'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/leanky-relu.png" style="display: block; margin: auto;" /></p>
+
+<hr />
+
+<h2 id="softmax">Softmax</h2>
+
+<h3 id="what-is-the-softmax-function">What is the softmax function?</h3>
+
+<ul>
+  <li>The softmax function, also known as the normalized exponential function.</li>
+  <li>Mathematical function that converts a vector of numbers into a vector of probabilities, where the probabilities of each value are proportional to the relative scale of each value in the vector.</li>
+</ul>
+
+<h3 id="when-is-the-softmax-function-used">When is the softmax function used?</h3>
+
+<ul>
+  <li>Primarily used in multiclass classification problems.</li>
+  <li>Typically placed in the last layer to interpret the outputs as probabilities.</li>
+  <li>Each value in the output of the softmax function corresponds to the probability that the input example belongs to one of the classes.</li>
+</ul>
+
+<h3 id="what-is-the-mathematical-formula-of-the-softmax-function">What is the mathematical formula of the softmax function?</h3>
+
+<p>Given a vector $Z$ of raw class scores from the final layer of a neural network, the softmax function $\sigma(Z)_j$ for a class $j$ is calculated as:</p>
+
+<script type="math/tex; mode=display">\sigma(Z)_j = \frac{e^{Z_j}}{\sum_{k=1}^{K}e^{Z_k}}</script>
+
+<p>where:</p>
+<ul>
+  <li>$e$ is the base of the natural logarithm,</li>
+  <li>$Z_j$ is the score for class $j$,</li>
+  <li>$K$ is the total number of classes,</li>
+  <li>the denominator is the sum of the exponential of all class scores in the vector $Z$.</li>
+</ul>
+
+<p>This formula ensures that all the output values of the softmax function are in the range (0, 1) and sum up to 1, making it a probability distribution.</p>
+
+<h3 id="what-are-the-advantages-and-disadvantages-of-softmax">What are the advantages and disadvantages of softmax?</h3>
+
+<h4 id="advantages-4">Advantages:</h4>
+<ol>
+  <li><strong>Interpretability</strong>: The softmax function outputs a probability distribution over classes, making the model’s predictions easy to interpret.</li>
+  <li><strong>Versatility</strong>: It can be used in multiple types of classification problems, including binary and multiclass classification.</li>
+  <li><strong>Differentiable</strong>: The softmax function is smooth and differentiable, allowing it to be used in backpropagation when training neural networks.</li>
+</ol>
+
+<h4 id="disadvantages-4">Disadvantages:</h4>
+<ol>
+  <li><strong>Vulnerability to Overflows</strong>: The use of the exponential function can lead to numerical instability, resulting in overflow or underflow errors. This can be mitigated by using techniques such as subtracting the max value from the scores before applying the exponential function.</li>
+  <li><strong>Does Not Handle Non-Exclusive Classes Well</strong>: For multi-label classification problems where an instance can belong to multiple classes simultaneously, softmax may not be appropriate because it assumes each instance is assigned to just one class.</li>
+  <li><strong>Sensitivity to Outliers</strong>: The exponential nature of the softmax function can cause it to be highly sensitive to outliers or very large inputs, leading to skewed distributions.</li>
+</ol>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">softmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Softmax'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/softmax.png" style="display: block; margin: auto;" /></p>
+
+<h2 id="softplus-activation-function">SoftPlus Activation Function</h2>
+
+<ul>
+  <li>The SoftPlus function, also known as <strong>Smooth ReLU</strong></li>
+  <li>It offers a smoother and more gradual transition compared to the ReLU (Rectified Linear Unit) function, while sharing some of its benefits.</li>
+</ul>
+
+<h3 id="formula">Formula</h3>
+
+<p>The mathematical formula for SoftPlus is:
+<script type="math/tex">SoftPlus(x) = \ln(1 + \exp(x))</script></p>
+
+<p>This function takes any real number $x$ as input and returns the natural logarithm of 1 plus the exponential of $x$.</p>
+
+<h3 id="usage">Usage</h3>
+
+<p>SoftPlus is primarily used in <strong>hidden layers</strong> of neural networks for several reasons:</p>
+
+<ul>
+  <li><strong>Smooth gradient:</strong> Unlike ReLU, which has a sharp gradient at zero, SoftPlus has a smooth, non-zero gradient throughout its domain. This helps in avoiding the vanishing gradient problem that can hinder learning in deep networks.</li>
+  <li><strong>Positive outputs:</strong> SoftPlus always outputs positive values, which can be beneficial in specific applications like modeling probabilities or dealing with data inherently positive.</li>
+</ul>
+
+<h3 id="advantages-5">Advantages</h3>
+
+<ul>
+  <li><strong>Smooth gradient:</strong> Compared to ReLU, SoftPlus avoids the vanishing gradient problem due to its smooth gradient.</li>
+  <li><strong>No “dying neurons”:</strong> Unlike ReLU, SoftPlus prevents neurons from becoming inactive by always having a positive output.</li>
+  <li><strong>Numerically stable:</strong> SoftPlus is less susceptible to numerical instability compared to other activation functions like sigmoid.</li>
+</ul>
+
+<h3 id="disadvantages-5">Disadvantages</h3>
+
+<ul>
+  <li><strong>Computationally less efficient:</strong> Compared to ReLU, which is simply a thresholding operation, SoftPlus involves calculating the natural logarithm and exponential, making it slightly computationally expensive.</li>
+  <li><strong>Not zero-centered:</strong> Unlike ReLU and tanh, SoftPlus outputs are always positive, which can lead to imbalanced activations in the network.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">softplus</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">()</span>
+
+<span class="n">output</span> <span class="o">=</span>  <span class="n">softplus</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'SoftPlus'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/softplus.png" style="display: block; margin: auto;" /></p>
+
+<hr />
+<h2 id="elu">ELU</h2>
+
+<h3 id="what-is-the-elu-function">What is the ELU function?</h3>
+
+<ul>
+  <li>Exponential Linear Unit (ELU)</li>
+  <li>Aims to improve the training speed and performance of deep learning models.</li>
+  <li>It is designed to bring together the best of both ReLU and its variants and the exponential functions.</li>
+</ul>
+
+<h3 id="when-is-the-elu-function-used">When is the ELU function used?</h3>
+
+<ul>
+  <li>ELU is often used in hidden layers of neural networks, particularly in scenarios where the goal is to reduce the vanishing gradient problem that can affect ReLU activations, without introducing the potential for noise in the training process as seen with LeakyReLU or PReLU.</li>
+  <li>It’s beneficial in deep networks that are prone to slow training or convergence issues due to non-linearities.</li>
+</ul>
+
+<h3 id="what-is-the-mathematical-formula-of-the-elu-function">What is the mathematical formula of the ELU function?</h3>
+
+<p>The ELU function is defined as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+ELU(x) = 
+\begin{cases} 
+x & \text{if } x > 0 \\
+\alpha(e^x - 1) & \text{if } x \leq 0 
+\end{cases} %]]></script>
+
+<p>where:</p>
+<ul>
+  <li>$x$ is the input to the function,</li>
+  <li>$\alpha$ is a hyperparameter that defines the value that ELU approaches when $x$ is a large negative number.</li>
+</ul>
+
+<h3 id="what-are-the-advantages-and-disadvantages-of-elu">What are the advantages and disadvantages of ELU?</h3>
+
+<h4 id="advantages-6">Advantages:</h4>
+<ol>
+  <li><strong>Reduction of Vanishing Gradient Problem</strong>: Like ReLU and its variants, ELU helps in mitigating the vanishing gradient issue, but with a smoother transition for negative input values.</li>
+  <li><strong>Better Performance for Deep Networks</strong>: ELU can help deep neural networks learn faster and perform better by introducing non-linearity without significantly hindering the learning of patterns in data.</li>
+  <li><strong>Continuity for All Input Values</strong>: ELU is continuous and differentiable at all points, including $x=0$, which aids in more stable and efficient gradient descent optimization.</li>
+</ol>
+
+<h4 id="disadvantages-6">Disadvantages:</h4>
+<ol>
+  <li><strong>Computational Complexity</strong>: The use of the exponential function makes ELU computationally more intensive than ReLU or LeakyReLU, potentially slowing down the training process.</li>
+  <li><strong>Parameter Tuning</strong>: The $\alpha$ parameter needs to be chosen carefully. While a default value of 1 is commonly used, different settings might be required based on the specific application or dataset, adding to the complexity of model design.</li>
+  <li>
+    <h2 id="not-zero-centered-for-positive-inputs-similar-to-relu-the-output-of-elu-for-positive-inputs-is-not-zero-centered-which-can-potentially-affect-the-convergence-rate-of-gradient-descent-algorithms"><strong>Not Zero-Centered for Positive Inputs</strong>: Similar to ReLU, the output of ELU for positive inputs is not zero-centered, which can potentially affect the convergence rate of gradient descent algorithms.</h2>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ELU</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span>  <span class="n">elu</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'ELU'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/elu.png" style="display: block; margin: auto;" /></p>
+
+<h2 id="mish">Mish</h2>
+<h3 id="what-is-the-mish-function">What is the Mish function?</h3>
+
+<ul>
+  <li>Mish function is a smooth, non-monotonic activation function</li>
+  <li>Combines the advantages of ReLU and its variants with a non-linear function to improve model performance and generalization.</li>
+  <li>It was proposed as a way to enhance the representation capacity of neural networks while maintaining a strong regularization effect.</li>
+</ul>
+
+<h3 id="when-is-the-mish-function-used">When is the Mish function used?</h3>
+
+<ul>
+  <li>Mish is often used in the hidden layers of deep neural networks, particularly in scenarios where the goal is to improve model accuracy and generalization across a wide range of tasks.</li>
+  <li>Its use is more common in state-of-the-art architectures where the focus is on pushing the boundaries of model performance.</li>
+</ul>
+
+<h3 id="what-is-the-mathematical-formula-of-the-mish-function">What is the mathematical formula of the Mish function?</h3>
+
+<p>The Mish function is defined by the formula:</p>
+
+<script type="math/tex; mode=display">\text{Mish}(x) = x \tanh(\ln(1 + e^x))</script>
+
+<p>where:</p>
+<ul>
+  <li>$x$ is the input to the function,</li>
+  <li>$\tanh$ is the hyperbolic tangent function,</li>
+  <li>$\ln(1 + e^x)$ represents the softplus function.</li>
+</ul>
+
+<h3 id="what-are-the-advantages-and-disadvantages-of-mish">What are the advantages and disadvantages of Mish?</h3>
+
+<h4 id="advantages-7">Advantages:</h4>
+
+<ol>
+  <li><strong>Improved Generalization</strong>: Mish has been shown to help neural networks generalize better to unseen data compared to other activation functions.</li>
+  <li><strong>Self-Regularizing Effect</strong>: Mish tends to have a self-regularizing effect that can reduce the need for other forms of regularization, such as dropout.</li>
+  <li><strong>Smoothness and Non-monotonicity</strong>: The smooth, non-monotonic nature of Mish allows for better gradient flow, potentially leading to improved training dynamics and convergence.</li>
+</ol>
+
+<h4 id="disadvantages-7">Disadvantages:</h4>
+
+<ol>
+  <li><strong>Computational Complexity</strong>: The complexity of the Mish function, due to the combination of exponential, logarithmic, and hyperbolic tangent operations, makes it more computationally intensive than simpler functions like ReLU.</li>
+  <li><strong>Potential for Slow Training</strong>: Due to its computational cost, using Mish in very deep or complex networks can lead to slower training times compared to networks using simpler activation functions.</li>
+  <li><strong>Hyperparameter Sensitivity</strong>: While Mish generally improves model performance, it can make the model more sensitive to the choice of other hyperparameters, such as learning rate and batch size, requiring careful tuning for optimal results.</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mish</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Mish</span><span class="p">()</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">mish</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Mish'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/mish.png" style="display: block; margin: auto;" /></p>
+
+<h2 id="gelu">GELU</h2>
+<h3 id="what-is-the-gelu-function">What is the GELU function?</h3>
+
+<ul>
+  <li>Gaussian Error Linear Unit (GELU)</li>
+  <li>Combines properties of both linear and non-linear functions.</li>
+  <li>It was designed to model the stochastic regularity of neurons in the brain, providing a smoother transition between the activated and non-activated states of a neuron.</li>
+</ul>
+
+<h3 id="when-is-the-gelu-function-used">When is the GELU function used?</h3>
+
+<ul>
+  <li>GELU is often used in the hidden layers of deep neural networks, particularly in state-of-the-art models in natural language processing (NLP) and computer vision.</li>
+  <li>It has gained popularity due to its performance improvements in models like Transformers and BERT.</li>
+</ul>
+
+<h3 id="what-is-the-mathematical-formula-of-the-gelu-function">What is the mathematical formula of the GELU function?</h3>
+
+<p>The GELU function can be approximated by the following formula:</p>
+
+<script type="math/tex; mode=display">\text{GELU}(x) = x \Phi(x)</script>
+
+<p>where:</p>
+<ul>
+  <li>$x$ is the input to the function,</li>
+  <li>$\Phi(x)$ is the cumulative distribution function of the standard normal distribution.</li>
+</ul>
+
+<p>An exact formulation involves more complex operations involving the standard normal cumulative distribution function, but the approximation provided is commonly used due to its simplicity and efficiency.</p>
+
+<h3 id="what-are-the-advantages-and-disadvantages-of-gelu">What are the advantages and disadvantages of GELU?</h3>
+
+<h4 id="advantages-8">Advantages:</h4>
+
+<ol>
+  <li><strong>Improved Learning Dynamics</strong>: GELU has been shown to improve the learning dynamics of neural networks by allowing a more flexible shape of the activation function, which can adapt more effectively to different types of data distributions.</li>
+  <li><strong>Enhanced Model Performance</strong>: Models utilizing GELU often achieve higher performance on a variety of tasks, especially in NLP and computer vision, due to its ability to better capture complex patterns in data.</li>
+  <li><strong>Smooth Gradient Flow</strong>: The smooth nature of GELU helps in maintaining a stable and efficient gradient flow during backpropagation, reducing the likelihood of vanishing or exploding gradients.</li>
+</ol>
+
+<h4 id="disadvantages-8">Disadvantages:</h4>
+
+<ol>
+  <li><strong>Computational Cost</strong>: The calculation of the GELU function is more computationally intensive than simpler functions like ReLU, potentially increasing the training time of models.</li>
+  <li><strong>Limited Intuition</strong>: The complex nature of GELU, being based on the distribution function of the Gaussian, might offer less intuitive understanding compared to more straightforward activations like ReLU or LeakyReLU.</li>
+  <li><strong>Optimization Sensitivity</strong>: Due to its non-linear and non-monotonic properties, GELU might introduce additional sensitivity to the optimization process, requiring careful tuning of hyperparameters for optimal model performance.</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gelu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">GELU</span><span class="p">()</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">gelu</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'GELU'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/GELU.png" style="display: block; margin: auto;" /></p>
+
+<hr />
+<h2 id="swish">Swish</h2>
+
+<h3 id="what-is-the-swish-function">What is the Swish function?</h3>
+
+<ul>
+  <li>The Swish function is a defined as the product of the input and the sigmoid of the input.</li>
+  <li>It was developed based on empirical evidence, showing improved performance on deep learning models over traditional activation functions like ReLU.</li>
+</ul>
+
+<h3 id="when-is-the-swish-function-used">When is the Swish function used?</h3>
+
+<ul>
+  <li>Swish is often used in various layers of deep neural networks, particularly where there is a need for overcoming limitations of ReLU, such as the dying ReLU problem.</li>
+  <li>It has been applied successfully across a range of tasks, including image recognition and natural language processing.</li>
+</ul>
+
+<h3 id="what-is-the-mathematical-formula-of-the-swish-function">What is the mathematical formula of the Swish function?</h3>
+
+<p>The mathematical formula for the Swish function is:</p>
+
+<script type="math/tex; mode=display">\text{Swish}(x) = x \cdot \sigma(x)</script>
+
+<p>where:</p>
+<ul>
+  <li>$x$ is the input to the function,</li>
+  <li>$\sigma(x)$ is the sigmoid function, $\sigma(x) = \frac{1}{1 + e^{-x}}$.</li>
+</ul>
+
+<h3 id="what-are-the-advantages-and-disadvantages-of-swish">What are the advantages and disadvantages of Swish?</h3>
+
+<h4 id="advantages-9">Advantages:</h4>
+
+<ol>
+  <li><strong>Improved Performance</strong>: Swish has been shown to outperform ReLU and other activations on a variety of deep learning tasks, leading to better model accuracy and generalization.</li>
+  <li><strong>Smooth Gradient Flow</strong>: Due to its smoothness, Swish allows for a more efficient flow of gradients through the network, potentially reducing issues related to the vanishing gradient problem.</li>
+  <li><strong>Self-Gating Property</strong>: The Swish function has a self-gating property, which means it can control the flow of information in the network without additional gating mechanisms, making the network architecture simpler.</li>
+</ol>
+
+<h4 id="disadvantages-9">Disadvantages:</h4>
+
+<ol>
+  <li><strong>Computational Overhead</strong>: Swish involves more computation than ReLU due to the presence of the sigmoid function, which can lead to increased training times.</li>
+  <li><strong>Empirical Basis</strong>: The development of Swish is more empirical than theoretical, meaning its effectiveness can vary across different datasets and model architectures without a clear theoretical understanding of why.</li>
+  <li><strong>Optimization Sensitivity</strong>: Like other sophisticated activation functions, Swish might introduce additional sensitivity to the optimization process, requiring careful hyperparameter tuning to achieve optimal performance.</li>
+</ol>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">Swish</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">beta</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Swish</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">input</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="nb">input</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+    
+
+<span class="n">swish</span> <span class="o">=</span> <span class="n">Swish</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span>  <span class="n">swish</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Swish'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/activation-plots/swish.png" style="display: block; margin: auto;" /></p>
+
+
+
+  <!-- POST NAVIGATION -->
+  <footer class="postNav clearfix"><a class="prev" href="/blog/activation_functions_ablation_study/"><span>&laquo;&nbsp;LearningByDoing Series: Understanding effects of activation functions</span></a><a class="next" href="/blog/cnn-series-alexnet/"><span>CNN Series: AlexNet&nbsp;&raquo;</span></a></footer>
+</article>
+      </div>
+   </div><!-- end .content --><div class="footer">
+	<div class="container">
+		<p class="copy">
+			&copy; 2026
+			<a href="http://brianmaierjr.com">Brian Maier Jr.</a> Powered by
+			<a href="http://jekyllrb.com">Jekyll</a>
+		</p>
+
+		<div class="footer-links">
+			<ul class="noList"><li>
+	<a href="https://github.com/meamarp" target="_blank">
+		<svg
+			id="github"
+			class="custom-icon"
+			version="1.1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			viewBox="0 0 100 100"
+			style="height: 30px; width: 30px;"
+		>
+			<circle
+				class="outer-shape"
+				cx="50"
+				cy="50"
+				r="48"
+				style="opacity: 1;"
+			></circle>
+			<path
+				class="inner-shape"
+				style="opacity: 1;"
+				transform="translate(25,25) scale(0.5)"
+				d="M50,1C22.938,1,1,22.938,1,50s21.938,49,49,49s49-21.938,49-49S77.062,1,50,1z M79.099,79.099 c-3.782,3.782-8.184,6.75-13.083,8.823c-1.245,0.526-2.509,0.989-3.79,1.387v-7.344c0-3.86-1.324-6.699-3.972-8.517 c1.659-0.16,3.182-0.383,4.57-0.67c1.388-0.287,2.855-0.702,4.402-1.245c1.547-0.543,2.935-1.189,4.163-1.938 c1.228-0.75,2.409-1.723,3.541-2.919s2.082-2.552,2.847-4.067s1.372-3.334,1.818-5.455c0.446-2.121,0.67-4.458,0.67-7.01 c0-4.945-1.611-9.155-4.833-12.633c1.467-3.828,1.308-7.991-0.478-12.489l-1.197-0.143c-0.829-0.096-2.321,0.255-4.474,1.053 c-2.153,0.798-4.57,2.105-7.249,3.924c-3.797-1.053-7.736-1.579-11.82-1.579c-4.115,0-8.039,0.526-11.772,1.579 c-1.69-1.149-3.294-2.097-4.809-2.847c-1.515-0.75-2.727-1.26-3.637-1.532c-0.909-0.271-1.754-0.439-2.536-0.503 c-0.782-0.064-1.284-0.079-1.507-0.048c-0.223,0.031-0.383,0.064-0.478,0.096c-1.787,4.53-1.946,8.694-0.478,12.489 c-3.222,3.477-4.833,7.688-4.833,12.633c0,2.552,0.223,4.889,0.67,7.01c0.447,2.121,1.053,3.94,1.818,5.455 c0.765,1.515,1.715,2.871,2.847,4.067s2.313,2.169,3.541,2.919c1.228,0.751,2.616,1.396,4.163,1.938 c1.547,0.543,3.014,0.957,4.402,1.245c1.388,0.287,2.911,0.511,4.57,0.67c-2.616,1.787-3.924,4.626-3.924,8.517v7.487 c-1.445-0.43-2.869-0.938-4.268-1.53c-4.899-2.073-9.301-5.041-13.083-8.823c-3.782-3.782-6.75-8.184-8.823-13.083 C9.934,60.948,8.847,55.56,8.847,50s1.087-10.948,3.231-16.016c2.073-4.899,5.041-9.301,8.823-13.083s8.184-6.75,13.083-8.823 C39.052,9.934,44.44,8.847,50,8.847s10.948,1.087,16.016,3.231c4.9,2.073,9.301,5.041,13.083,8.823 c3.782,3.782,6.75,8.184,8.823,13.083c2.143,5.069,3.23,10.457,3.23,16.016s-1.087,10.948-3.231,16.016 C85.848,70.915,82.88,75.317,79.099,79.099L79.099,79.099z"
+			></path>
+		</svg>
+	</a>
+</li>
+</ul>
+		</div>
+	</div>
+</div>
+<!-- end .footer -->
+<!-- Add jQuery and other scripts -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src=/assets/js/jquery-1.11.2.min.js><\/script>')</script>
+<script src="/assets/js/dropcap.min.js"></script>
+<script src="/assets/js/responsive-nav.min.js"></script>
+<script src="/assets/js/scripts.js"></script>
+</body>
+
+</html>
