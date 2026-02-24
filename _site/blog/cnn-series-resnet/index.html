@@ -37,7 +37,26 @@
 	<link
 		rel="canonical"
 		href="http://0.0.0.0:4000/blog/cnn-series-resnet/"
-	/></head>
+	/><!-- Mermaid Diagram Library -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  
+  // Convert code blocks with language-mermaid to mermaid divs
+  document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('code.language-mermaid');
+    codeBlocks.forEach(block => {
+      const pre = block.parentElement;
+      const code = block.textContent;
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = code;
+      pre.replaceWith(div);
+    });
+    mermaid.contentLoaded();
+  });
+</script>
+</head>
 <body> <div class="header ">
      <div class="container">
          <h1 class="logo"><a href="/">AMAR POTDAR</a></h1>
@@ -48,8 +67,7 @@
                      <a href="/about">About</a>
                  </li><li class="elementlast">
                      <a href="/contact">Contact</a>
-                 </li><li> <a href="https://github.com/brianmaierjr/long-haul" target="_blank">GitHub</a></li>
-                 <li><a href="https://github.com/brianmaierjr/long-haul/archive/master.zip">Download Theme</a></li>
+                 </li><li> <a href="https://github.com/MeAmarP" target="_blank">GitHub</a></li>
              </ul>
          </nav>
      </div>
@@ -71,7 +89,7 @@
 <h2 id="resnet">ResNet</h2>
 <ul>
   <li>ResNet short for <strong>Residual Network</strong>
-<img src="http://0.0.0.0:4000/assets/img/resnet-sample.png" style="display: block; margin: auto;" /></li>
+<img src="/assets/img/resnet-sample.png" style="display: block; margin: auto;" /></li>
   <li>
     <p>it tackled a major challenge faced by deep convolutional neural networks (CNNs) callws <strong>vanishing gradients</strong>.</p>
   </li>
@@ -79,15 +97,15 @@
     <p>As CNNs grew deeper (more layers), training became increasingly difficult. The gradients used to update the network’s weights during backprop would become very small or vanish entirely in the earlier layers. This hampered learning and prevented the network from effectively utilizing its depth.</p>
   </li>
   <li><strong>Residual Learning:</strong> By adding the original input to the output of the stacked layers within a residual block, ResNet essentially allows the network to learn the residual function between the input and the desired output. This addresses the degradation problem by using this shortcut connections to skip one or more layers.
-<img src="http://0.0.0.0:4000/assets/img/residual-learning.png" style="display: block; margin: auto;" /></li>
+<img src="/assets/img/residual-learning.png" style="display: block; margin: auto;" /></li>
   <li><strong>Identity Mapping:</strong> Shortcut connections perform identity mapping, allowing information to bypass certain layers.</li>
   <li><strong>Skip Connections:</strong> These connections bypass a portion of the network, <strong>allowing the input from a lower layer to be directly added to the output of a higher layer</strong>. This ensures that information can flow through the network unobstructed, even in very deep architectures.
-<img src="http://0.0.0.0:4000/assets/img/resnet-train-error.png" style="display: block; margin: auto;" /></li>
+<img src="/assets/img/resnet-train-error.png" style="display: block; margin: auto;" /></li>
   <li>
     <p><strong>Residual Blocks</strong>: These blocks are the core building blocks of the ResNet architecture and contain a critical elements.</p>
   </li>
   <li>There are two types of Residual blocks called as <strong>BasicBlock</strong> and <strong>BottleNeckBlock</strong>.
-<img src="http://0.0.0.0:4000/assets/img/resnet-blocks.png" style="display: block; margin: auto;" /></li>
+<img src="/assets/img/resnet-blocks.png" style="display: block; margin: auto;" /></li>
   <li>Differences Between <strong>BasicBlock</strong> and <strong>BottleneckBlock</strong>:
     <ul>
       <li><strong>Depth of Layers:</strong>
@@ -105,7 +123,7 @@
     </ul>
   </li>
   <li>Common variants include ResNet-18, ResNet-34, ResNet-50, ResNet-101, and ResNet-152.
-<img src="http://0.0.0.0:4000/assets/img/resnet-arch.png" style="display: block; margin: auto;" /></li>
+<img src="/assets/img/resnet-arch.png" style="display: block; margin: auto;" /></li>
   <li>ResNet won the 1st place in the ILSVRC 2015 classification task.</li>
 </ul>
 

@@ -37,7 +37,26 @@
 	<link
 		rel="canonical"
 		href="http://0.0.0.0:4000/blog/non-linear-activation/"
-	/></head>
+	/><!-- Mermaid Diagram Library -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  
+  // Convert code blocks with language-mermaid to mermaid divs
+  document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('code.language-mermaid');
+    codeBlocks.forEach(block => {
+      const pre = block.parentElement;
+      const code = block.textContent;
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = code;
+      pre.replaceWith(div);
+    });
+    mermaid.contentLoaded();
+  });
+</script>
+</head>
 <body> <div class="header ">
      <div class="container">
          <h1 class="logo"><a href="/">AMAR POTDAR</a></h1>
@@ -48,8 +67,7 @@
                      <a href="/about">About</a>
                  </li><li class="elementlast">
                      <a href="/contact">Contact</a>
-                 </li><li> <a href="https://github.com/brianmaierjr/long-haul" target="_blank">GitHub</a></li>
-                 <li><a href="https://github.com/brianmaierjr/long-haul/archive/master.zip">Download Theme</a></li>
+                 </li><li> <a href="https://github.com/MeAmarP" target="_blank">GitHub</a></li>
              </ul>
          </nav>
      </div>
@@ -229,7 +247,7 @@
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Sigmoid Activation'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/sigmoid.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/sigmoid.png" style="display: block; margin: auto;" /></p>
 
 <hr />
 
@@ -285,7 +303,7 @@
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Tanh'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/tanh.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/tanh.png" style="display: block; margin: auto;" /></p>
 
 <hr />
 
@@ -344,7 +362,7 @@
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'ReLU'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/relu.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/relu.png" style="display: block; margin: auto;" /></p>
 
 <hr />
 
@@ -406,7 +424,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Leaky ReLU'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/leanky-relu.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/leanky-relu.png" style="display: block; margin: auto;" /></p>
 
 <hr />
 
@@ -468,7 +486,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Softmax'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/softmax.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/softmax.png" style="display: block; margin: auto;" /></p>
 
 <h2 id="softplus-activation-function">SoftPlus Activation Function</h2>
 
@@ -515,7 +533,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'SoftPlus'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/softplus.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/softplus.png" style="display: block; margin: auto;" /></p>
 
 <hr />
 <h2 id="elu">ELU</h2>
@@ -577,7 +595,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'ELU'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/elu.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/elu.png" style="display: block; margin: auto;" /></p>
 
 <h2 id="mish">Mish</h2>
 <h3 id="what-is-the-mish-function">What is the Mish function?</h3>
@@ -633,7 +651,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Mish'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/mish.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/mish.png" style="display: block; margin: auto;" /></p>
 
 <h2 id="gelu">GELU</h2>
 <h3 id="what-is-the-gelu-function">What is the GELU function?</h3>
@@ -690,7 +708,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'GELU'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/GELU.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/GELU.png" style="display: block; margin: auto;" /></p>
 
 <hr />
 <h2 id="swish">Swish</h2>
@@ -759,7 +777,7 @@ x & \text{if } x > 0 \\
 <span class="n">plot_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="s">'Swish'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://0.0.0.0:4000/assets/img/activation-plots/swish.png" style="display: block; margin: auto;" /></p>
+<p><img src="/assets/img/activation-plots/swish.png" style="display: block; margin: auto;" /></p>
 
 
 
