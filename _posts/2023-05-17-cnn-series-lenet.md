@@ -21,4 +21,4 @@ tags: [cnn-series,image-models]
     - for final output layer radial basis function (RBF) network to classify images.
 - Architecture: LeNet-5's architecture is relatively simple by today's standards but was revolutionary at the time.
 
-<img src="{{site.url}}/assets/img/lenet.jpg" style="display: block; margin: auto;" />
+<img src="/assets/img/lenet.jpg" style="display: block; margin: auto;" />

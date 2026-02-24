@@ -19,4 +19,4 @@ tags: [cnn-series,image-models]
 - VGGNet uses ReLU activation throughout the network.
 - VGGNet was trained using a multi-scale approach where the scale of the input images was varied during the training process. This helped the model to become robust to different image sizes and resolutions.
 
-<img src="{{site.url}}/assets/img/vggnet.png" style="display: block; margin: auto;" />
+<img src="/assets/img/vggnet.png" style="display: block; margin: auto;" />
