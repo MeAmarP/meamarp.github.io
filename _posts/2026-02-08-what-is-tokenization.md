@@ -6,8 +6,8 @@ categories: journal
 tags: [llm-series, language-models]
 ---
 
->"Everything should be made as simple as possible, but not simpler."
->— Albert Einstein
+> "Everything should be made as simple as possible, but not simpler."
+> — Albert Einstein
 
 Large Language Models(LLMs) appear to read and write words, sentences and even paragraphs fluently. But internally, **they never see words at all**.
 
@@ -21,8 +21,7 @@ Understanding tokenization is the first and most important step when learning ho
 
 ## The illusion: "LLMs Understand Words"
 
-When you type this sentence
-> LLMs are amazing
+When you type this sentence: `LLMs are amazing`
 
 it looks like a sequence of words.
 
@@ -58,7 +57,7 @@ Input Text:
 
 Possible Tokenizations:
 
-```[`I`, `love`, `Machine`, `Learning`]```
+`["I", "love", "Machine", "Learning"]`
 
 Mapped to Token IDs:
 
@@ -106,7 +105,7 @@ Imagine a word-level vocabulary for English. There are hundreds of thousands of 
 
 **Example**: 
 
-```running, ran, runs, runner```
+`running, ran, runs, runner`
 
 Each becomes a separate token. 
 
@@ -126,7 +125,7 @@ With word-level tokenization, the model would have no way to represent this unse
 
 With subword tokenization:
 
-```["electro" , "encephalo" , "graphy"]```
+`["electro", "encephalo", "graphy"]`
 
 ### Problem 3: Names, URLs and Code Break everything
 Consider this input:
@@ -139,7 +138,7 @@ Or a variable name in code:
 
 Here a word based tokenizer fails immediately.
 
-### Problme 4: Multilingual Text
+### Problem 4: Multilingual Text
 Consider this Marathi sentence:
 
 `मला मशीन लर्निंग आवडते`
@@ -147,6 +146,7 @@ Consider this Marathi sentence:
 There are:
 - Many unique words
 - Many inflected forms
+
 Here word-level tokenization becomes impractical. Subword tokenization may break it down into manageable pieces.
 
 ## The core idea: Subword Tokenization
@@ -167,7 +167,7 @@ Notice how subword tokenization captures common roots, prefixes and suffixes.
 
 **Example:**
 
-``` playing, player, played, playful```
+`playing, player, played, playful`
 
 All share the root sub-token:
 
@@ -184,7 +184,7 @@ This allows:
 `Transformers scale surprisingly well`
 
 **Possible Tokenizations:**
-```[`Transform`, `ers`, `scale`, `surprising`, `ly`, `well`]```
+`["Transform", "ers", "scale", "surprising", "ly", "well"]`
 
 **Mapped to Token IDs:**
 `[34567, 890, 1234, 5678, 90, 4321]`
@@ -222,5 +222,3 @@ Context window limits are measured in tokens, not words. Tokenization decides ho
 
 ## Conclusion
 Tokenization is a foundational concept in understanding how LLMs operate. By breaking text into subword tokens, models can efficiently handle vast vocabularies, generalize to unseen words, and process.
-
-
