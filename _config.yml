@@ -19,6 +19,11 @@ paginate: 5
 # Plugins (minimal)
 plugins: [jekyll-paginate]
 
+# Prevent build metadata files from being copied into _site.
+exclude:
+  - package.json
+  - package-lock.json
+
 # Sass
 sass:
   style: compressed
