@@ -208,17 +208,10 @@ The model processes only numbers, never words. All linguistic knowledge is encod
 ## Why Tokenization Matters
 Tokenization is not just a preprocessing step -- it fundamentally shapes how LLMs behave and generalize across languages and domains.
 
-- **Cost and Latency**
-LLMs are billed per token. More tokens = higher cost and slower responses.
-
-- **Multilingual Fairness**
-Some Languages require more tokens for the same meaning, making them more expensive and sometimes less accurate.
-
-- **Reasoning Quality**
-If a meaningful concept is spilt into many tokens, the model has to "reconstruct" it internally, which can affect reasoning.
-
-- **Model Limits**
-Context window limits are measured in tokens, not words. Tokenization decides how much information fits in that window.
+- **Cost and Latency:** LLMs are billed per token. More tokens = higher cost and slower responses.
+- **Multilingual Fairness:** Some languages require more tokens for the same meaning, making them more expensive and sometimes less accurate.
+- **Reasoning Quality:** If a meaningful concept is split into many tokens, the model has to "reconstruct" it internally, which can affect reasoning.
+- **Model Limits:** Context window limits are measured in tokens, not words. Tokenization decides how much information fits in that window.
 
 ## Conclusion
 Tokenization is a foundational concept in understanding how LLMs operate. By breaking text into subword tokens, models can efficiently handle vast vocabularies, generalize to unseen words, and process.
