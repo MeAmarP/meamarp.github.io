@@ -447,7 +447,7 @@ train_and_test(activation_functions, train_loader, test_loader, criterion, devic
     Total time taken for training and testing: 155.03 seconds
 
 
-<img src="{{site.url}}/assets/img/activation-func-ablation.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-func-ablation.png" style="display: block; margin: auto;" />
     
 
     

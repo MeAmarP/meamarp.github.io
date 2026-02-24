@@ -149,7 +149,7 @@ plot_output(data, output, 'Sigmoid Activation')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/sigmoid.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/sigmoid.png" style="display: block; margin: auto;" />
     
 
 
@@ -201,7 +201,7 @@ plot_output(data, output, 'Tanh')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/tanh.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/tanh.png" style="display: block; margin: auto;" />
     
 
 
@@ -256,7 +256,7 @@ plot_output(data, output, 'ReLU')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/relu.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/relu.png" style="display: block; margin: auto;" />
     
 
 
@@ -314,7 +314,7 @@ plot_output(data, output, 'Leaky ReLU')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/leanky-relu.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/leanky-relu.png" style="display: block; margin: auto;" />
     
 
 
@@ -376,7 +376,7 @@ plot_output(data, output, 'Softmax')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/softmax.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/softmax.png" style="display: block; margin: auto;" />
     
 
 
@@ -424,7 +424,7 @@ plot_output(data, output, 'SoftPlus')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/softplus.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/softplus.png" style="display: block; margin: auto;" />
     
 
 
@@ -483,7 +483,7 @@ plot_output(data, output, 'ELU')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/elu.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/elu.png" style="display: block; margin: auto;" />
     
 
 
@@ -538,7 +538,7 @@ plot_output(data, output, 'Mish')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/mish.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/mish.png" style="display: block; margin: auto;" />
     
 
 
@@ -593,7 +593,7 @@ plot_output(data, output, 'GELU')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/GELU.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/GELU.png" style="display: block; margin: auto;" />
     
 
 
@@ -661,5 +661,5 @@ plot_output(data, output, 'Swish')
 
 
     
-<img src="{{site.url}}/assets/img/activation-plots/swish.png" style="display: block; margin: auto;" />
+<img src="/assets/img/activation-plots/swish.png" style="display: block; margin: auto;" />
     
