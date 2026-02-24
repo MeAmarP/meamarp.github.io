@@ -98,10 +98,7 @@
 
 <h2 id="the-illusion-llms-understand-words">The illusion: “LLMs Understand Words”</h2>
 
-<p>When you type this sentence</p>
-<blockquote>
-  <p>LLMs are amazing</p>
-</blockquote>
+<p>When you type this sentence: <code class="highlighter-rouge">LLMs are amazing</code></p>
 
 <p>it looks like a sequence of words.</p>
 
@@ -143,7 +140,7 @@
 
 <p>Possible Tokenizations:</p>
 
-<p><code class="highlighter-rouge">[`I`, `love`, `Machine`, `Learning`]</code></p>
+<p><code class="highlighter-rouge">["I", "love", "Machine", "Learning"]</code></p>
 
 <p>Mapped to Token IDs:</p>
 
@@ -216,7 +213,7 @@ Consider the word:</p>
 
 <p>With subword tokenization:</p>
 
-<p><code class="highlighter-rouge">["electro" , "encephalo" , "graphy"]</code></p>
+<p><code class="highlighter-rouge">["electro", "encephalo", "graphy"]</code></p>
 
 <h3 id="problem-3-names-urls-and-code-break-everything">Problem 3: Names, URLs and Code Break everything</h3>
 <p>Consider this input:</p>
@@ -229,7 +226,7 @@ Consider the word:</p>
 
 <p>Here a word based tokenizer fails immediately.</p>
 
-<h3 id="problme-4-multilingual-text">Problme 4: Multilingual Text</h3>
+<h3 id="problem-4-multilingual-text">Problem 4: Multilingual Text</h3>
 <p>Consider this Marathi sentence:</p>
 
 <p><code class="highlighter-rouge">मला मशीन लर्निंग आवडते</code></p>
@@ -237,9 +234,10 @@ Consider the word:</p>
 <p>There are:</p>
 <ul>
   <li>Many unique words</li>
-  <li>Many inflected forms
-Here word-level tokenization becomes impractical. Subword tokenization may break it down into manageable pieces.</li>
+  <li>Many inflected forms</li>
 </ul>
+
+<p>Here word-level tokenization becomes impractical. Subword tokenization may break it down into manageable pieces.</p>
 
 <h2 id="the-core-idea-subword-tokenization">The core idea: Subword Tokenization</h2>
 <p>Modern LLMs use <strong>subword tokenization</strong>.</p>
@@ -277,7 +275,7 @@ Here word-level tokenization becomes impractical. Subword tokenization may break
 <code class="highlighter-rouge">Transformers scale surprisingly well</code></p>
 
 <p><strong>Possible Tokenizations:</strong>
-<code class="highlighter-rouge">[`Transform`, `ers`, `scale`, `surprising`, `ly`, `well`]</code></p>
+<code class="highlighter-rouge">["Transform", "ers", "scale", "surprising", "ly", "well"]</code></p>
 
 <p><strong>Mapped to Token IDs:</strong>
 <code class="highlighter-rouge">[34567, 890, 1234, 5678, 90, 4321]</code></p>
@@ -323,7 +321,6 @@ Context window limits are measured in tokens, not words. Tokenization decides ho
 
 <h2 id="conclusion">Conclusion</h2>
 <p>Tokenization is a foundational concept in understanding how LLMs operate. By breaking text into subword tokens, models can efficiently handle vast vocabularies, generalize to unseen words, and process.</p>
-
 
 
   <!-- POST NAVIGATION -->
