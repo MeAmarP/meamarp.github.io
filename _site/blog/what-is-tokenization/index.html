@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]--><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<title>What is Tokenization & Why LLMs Don't See Words</title>
+
+	<!-- Open Graph Meta -->
+	<meta content="AMAR POTDAR" property="og:site_name" /><meta content="What is Tokenization & Why LLMs Don't See Words" property="og:title" /><meta content="article" property="og:type" /><meta content="Thoughts, Experiences, Projects" property="og:description" /><meta content="http://0.0.0.0:4000/blog/what-is-tokenization/" property="og:url" /><meta
+		content="2026-02-08T00:00:00+05:30"
+		property="article:published_time"
+	/>
+	<meta content="http://0.0.0.0:4000/about/" property="article:author" /><meta
+		content="http://0.0.0.0:4000/assets/img/touring.jpg"
+		property="og:image"
+	/><!-- Twitter Cards -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@" />
+	<meta name="twitter:creator" content="@" /><meta name="twitter:title" content="What is Tokenization & Why LLMs Don't See Words" /><meta name="twitter:url" content="http://0.0.0.0:4000/blog/what-is-tokenization/" /><meta name="twitter:description" content="Thoughts, Experiences, Projects" /><meta
+		name="twitter:image:src"
+		content="http://0.0.0.0:4000/assets/img/touring.jpg"
+	/><!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href=""/>
+
+	<!-- Come and get me RSS readers -->
+	<link rel="alternate" type="application/rss+xml" title="AMAR POTDAR"
+	href="http://0.0.0.0:4000/feed.xml" />
+
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="/assets/css/style.css" />
+
+	<!-- Canonical URL -->
+	<link
+		rel="canonical"
+		href="http://0.0.0.0:4000/blog/what-is-tokenization/"
+	/></head>
+<body> <div class="header ">
+     <div class="container">
+         <h1 class="logo"><a href="/">AMAR POTDAR</a></h1>
+         <nav class="nav-collapse">
+             <ul class="noList"><li class="elementfirst">
+                     <a href="/index.html">Home</a>
+                 </li><li class="element">
+                     <a href="/about">About</a>
+                 </li><li class="elementlast">
+                     <a href="/contact">Contact</a>
+                 </li><li> <a href="https://github.com/brianmaierjr/long-haul" target="_blank">GitHub</a></li>
+                 <li><a href="https://github.com/brianmaierjr/long-haul/archive/master.zip">Download Theme</a></li>
+             </ul>
+         </nav>
+     </div>
+ </div><!-- end .header -->
+<div class="content">
+      <div class="container">
+         <article class="post"><header>
+    <h1 class="postTitle">What is Tokenization & Why LLMs Don't See Words</h1>
+    <p class="meta">February 08, 2026 | <span class="time">4</span> Minute Read</p>
+  </header>
+
+  <blockquote>
+  <p>“Everything should be made as simple as possible, but not simpler.”
+— Albert Einstein</p>
+</blockquote>
+
+<p>Large Language Models(LLMs) appear to read and write words, sentences and even paragraphs fluently. But internally, <strong>they never see words at all</strong>.</p>
+
+<p>They see <strong>tokens</strong>.</p>
+
+<p>Understanding tokenization is the first and most important step when learning how llms actually work. Almost every downstream concept – cost, latency, multilingual bias, hallucinations and even reasoning quality – is influenced by this single design choice.</p>
+
+<p><em>In this post am trying to answer below questions:</em></p>
+<ol>
+  <li><em>What is tokenization?</em></li>
+  <li><em>Why LLMs don’t operate on words?</em></li>
+</ol>
+
+<h2 id="the-illusion-llms-understand-words">The illusion: “LLMs Understand Words”</h2>
+
+<p>When you type this sentence</p>
+<blockquote>
+  <p>LLMs are amazing</p>
+</blockquote>
+
+<p>it looks like a sequence of words.</p>
+
+<p>But for an LLM, this is just a raw text, which is meaningless until converted into numbers.</p>
+
+<p>Its basically because Neural Networks cannot operate on:</p>
+<ul>
+  <li>Characters</li>
+  <li>Strings</li>
+  <li>Words</li>
+</ul>
+
+<p>They only operate on <strong>numbers</strong>.</p>
+
+<p>so the first job of LLMs is to convert text –&gt; numbers.</p>
+
+<p>that conversion process is called <strong>tokenization</strong>.</p>
+
+<h2 id="what-is-tokenization">What is Tokenization?</h2>
+<blockquote>
+  <p>Tokenization is the process of converting raw text into a sequence of discrete tokens that can be mapped to numbers.</p>
+</blockquote>
+
+<p>Each token can be:</p>
+<ul>
+  <li>a word</li>
+  <li>a part of a word</li>
+  <li>a character</li>
+  <li>or even a byte</li>
+</ul>
+
+<p>depending on the tokenizer design.</p>
+
+<p><strong>Example:</strong></p>
+
+<p>Input Text:</p>
+
+<p><code class="highlighter-rouge">I love Machine Learning</code></p>
+
+<p>Possible Tokenizations:</p>
+
+<p><code class="highlighter-rouge">[`I`, `love`, `Machine`, `Learning`]</code></p>
+
+<p>Mapped to Token IDs:</p>
+
+<p><code class="highlighter-rouge">[101, 1567, 3456, 7890]</code></p>
+
+<h3 id="high-level-llm-input-pipeline">High-level LLM input pipeline</h3>
+<p>Notice how LLMs process text inputs:</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[Raw Text Input] --&gt; B[Tokenizer]
+    B --&gt; C[Token IDs]
+    C --&gt; D[Embedding Layer]
+    D --&gt; E[Transformer Blocks]
+</code></pre>
+
+<p>Tokenization happens right at the start of the LLM input.</p>
+
+<p>The model never sees raw text, it only sees token IDs.</p>
+
+<h2 id="tokens--words">Tokens != Words</h2>
+<p>Most people assume that tokens are just words. But thats not true.</p>
+
+<p><strong>Example:</strong>
+Consider the word:</p>
+
+<p><code class="highlighter-rouge">unbelievable</code></p>
+
+<p>Possible Tokens:</p>
+<ul>
+  <li><code class="highlighter-rouge">unbelievable</code> –&gt; 1 token (word-level)</li>
+  <li><code class="highlighter-rouge">un</code> + <code class="highlighter-rouge">believable</code> –&gt; 2 tokens (Subword-level)</li>
+  <li><code class="highlighter-rouge">un</code> + <code class="highlighter-rouge">believe</code> + <code class="highlighter-rouge">able</code> –&gt; 3 tokens (Finer subword-level)</li>
+</ul>
+
+<p>All represent the same word, but tokenized differently. This is intentional.</p>
+
+<h2 id="why-not-just-use-words-as-tokens">Why not just use words as tokens?</h2>
+<p>At first glance, using words as tokens seems natural. However, there are several challenges with word-level tokenization:</p>
+
+<h3 id="problem-1-vocabulary-explosion">Problem 1: Vocabulary Explosion</h3>
+<p>Imagine a word-level vocabulary for English. There are hundreds of thousands of words, including</p>
+<ul>
+  <li>every verb tense</li>
+  <li>plurals</li>
+  <li>names</li>
+  <li>slangs</li>
+</ul>
+
+<p><strong>Example</strong>:</p>
+
+<p><code class="highlighter-rouge">running, ran, runs, runner</code></p>
+
+<p>Each becomes a separate token.</p>
+
+<p>Now multiply this across:</p>
+<ul>
+  <li>all languages</li>
+  <li>all domains (technical, medical, biology, legal etc.)</li>
+  <li>all spelling variations</li>
+</ul>
+
+<p>This leads to an enormous vocabulary size, making the model large and inefficient.</p>
+
+<h3 id="problem-2-out-of-vocabulary-oov-words">Problem 2: Out-of-Vocabulary (OOV) Words</h3>
+<p>Suppose the model never saw this word during training:</p>
+
+<p><code class="highlighter-rouge">electroencephalography</code></p>
+
+<p>With word-level tokenization, the model would have no way to represent this unseen word, leading to OOV issues.</p>
+
+<p>With subword tokenization:</p>
+
+<p><code class="highlighter-rouge">["electro" , "encephalo" , "graphy"]</code></p>
+
+<h3 id="problem-3-names-urls-and-code-break-everything">Problem 3: Names, URLs and Code Break everything</h3>
+<p>Consider this input:</p>
+
+<p><code class="highlighter-rouge">Visit www.example-site.com for more info!</code></p>
+
+<p>Or a variable name in code:</p>
+
+<p><code class="highlighter-rouge">user_profile_data = fetch_data()</code></p>
+
+<p>Here a word based tokenizer fails immediately.</p>
+
+<h3 id="problme-4-multilingual-text">Problme 4: Multilingual Text</h3>
+<p>Consider this Marathi sentence:</p>
+
+<p><code class="highlighter-rouge">मला मशीन लर्निंग आवडते</code></p>
+
+<p>There are:</p>
+<ul>
+  <li>Many unique words</li>
+  <li>Many inflected forms
+Here word-level tokenization becomes impractical. Subword tokenization may break it down into manageable pieces.</li>
+</ul>
+
+<h2 id="the-core-idea-subword-tokenization">The core idea: Subword Tokenization</h2>
+<p>Modern LLMs use <strong>subword tokenization</strong>.</p>
+
+<p>Instead of treating words as atomic units, subword tokenization breaks texts into frequently occurring pieces.</p>
+
+<p><strong>Conceptual View:</strong></p>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[Text Corpus] --&gt; B[Frequent Sub-word Patterns]
+    B --&gt; C[Tokenizer Vocabulary]
+    C --&gt; D[Tokenization of New Text]
+</code></pre>
+
+<p>Notice how subword tokenization captures common roots, prefixes and suffixes.</p>
+
+<p><strong>Example:</strong></p>
+
+<p><code class="highlighter-rouge">playing, player, played, playful</code></p>
+
+<p>All share the root sub-token:</p>
+
+<p><code class="highlighter-rouge">play</code></p>
+
+<p>This allows:</p>
+<ul>
+  <li>parameter sharing</li>
+  <li>better generalization</li>
+  <li>fewer total tokens</li>
+</ul>
+
+<h2 id="token-ids-the-language-of-the-model">Token IDs: The Language of the Model</h2>
+
+<p><strong>Input Text:</strong>
+<code class="highlighter-rouge">Transformers scale surprisingly well</code></p>
+
+<p><strong>Possible Tokenizations:</strong>
+<code class="highlighter-rouge">[`Transform`, `ers`, `scale`, `surprising`, `ly`, `well`]</code></p>
+
+<p><strong>Mapped to Token IDs:</strong>
+<code class="highlighter-rouge">[34567, 890, 1234, 5678, 90, 4321]</code></p>
+
+<p>At this point:</p>
+<ul>
+  <li>meaning = vector relationships</li>
+  <li>syntax = positional patterns</li>
+  <li>language = statistics</li>
+</ul>
+
+<h3 id="inside-the-model-numbers-only">Inside the model: Numbers Only</h3>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[Token IDs] --&gt; B[Embedding Layer]
+    B --&gt; C[Vector Representations]
+    C --&gt; D[Transformer Blocks : Attention + MLP Layers]
+</code></pre>
+
+<p>The model processes only numbers, never words. All linguistic knowledge is encoded in the learned embeddings and attention patterns.</p>
+
+<h2 id="why-tokenization-matters">Why Tokenization Matters</h2>
+<p>Tokenization is not just a preprocessing step – it fundamentally shapes how LLMs behave and generalize across languages and domains.</p>
+
+<ul>
+  <li>
+    <p><strong>Cost and Latency</strong>
+LLMs are billed per token. More tokens = higher cost and slower responses.</p>
+  </li>
+  <li>
+    <p><strong>Multilingual Fairness</strong>
+Some Languages require more tokens for the same meaning, making them more expensive and sometimes less accurate.</p>
+  </li>
+  <li>
+    <p><strong>Reasoning Quality</strong>
+If a meaningful concept is spilt into many tokens, the model has to “reconstruct” it internally, which can affect reasoning.</p>
+  </li>
+  <li>
+    <p><strong>Model Limits</strong>
+Context window limits are measured in tokens, not words. Tokenization decides how much information fits in that window.</p>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Tokenization is a foundational concept in understanding how LLMs operate. By breaking text into subword tokens, models can efficiently handle vast vocabularies, generalize to unseen words, and process.</p>
+
+
+
+  <!-- POST NAVIGATION -->
+  <footer class="postNav clearfix"><a class="prev" href="/blog/ai-agent-patterns/"><span>&laquo;&nbsp;Workflow and Agent Patterns for Intelligent Systems</span></a></footer>
+</article>
+      </div>
+   </div><!-- end .content --><div class="footer">
+	<div class="container">
+		<p class="copy">
+			&copy; 2026
+			<a href="http://brianmaierjr.com">Brian Maier Jr.</a> Powered by
+			<a href="http://jekyllrb.com">Jekyll</a>
+		</p>
+
+		<div class="footer-links">
+			<ul class="noList"><li>
+	<a href="https://github.com/meamarp" target="_blank">
+		<svg
+			id="github"
+			class="custom-icon"
+			version="1.1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			viewBox="0 0 100 100"
+			style="height: 30px; width: 30px;"
+		>
+			<circle
+				class="outer-shape"
+				cx="50"
+				cy="50"
+				r="48"
+				style="opacity: 1;"
+			></circle>
+			<path
+				class="inner-shape"
+				style="opacity: 1;"
+				transform="translate(25,25) scale(0.5)"
+				d="M50,1C22.938,1,1,22.938,1,50s21.938,49,49,49s49-21.938,49-49S77.062,1,50,1z M79.099,79.099 c-3.782,3.782-8.184,6.75-13.083,8.823c-1.245,0.526-2.509,0.989-3.79,1.387v-7.344c0-3.86-1.324-6.699-3.972-8.517 c1.659-0.16,3.182-0.383,4.57-0.67c1.388-0.287,2.855-0.702,4.402-1.245c1.547-0.543,2.935-1.189,4.163-1.938 c1.228-0.75,2.409-1.723,3.541-2.919s2.082-2.552,2.847-4.067s1.372-3.334,1.818-5.455c0.446-2.121,0.67-4.458,0.67-7.01 c0-4.945-1.611-9.155-4.833-12.633c1.467-3.828,1.308-7.991-0.478-12.489l-1.197-0.143c-0.829-0.096-2.321,0.255-4.474,1.053 c-2.153,0.798-4.57,2.105-7.249,3.924c-3.797-1.053-7.736-1.579-11.82-1.579c-4.115,0-8.039,0.526-11.772,1.579 c-1.69-1.149-3.294-2.097-4.809-2.847c-1.515-0.75-2.727-1.26-3.637-1.532c-0.909-0.271-1.754-0.439-2.536-0.503 c-0.782-0.064-1.284-0.079-1.507-0.048c-0.223,0.031-0.383,0.064-0.478,0.096c-1.787,4.53-1.946,8.694-0.478,12.489 c-3.222,3.477-4.833,7.688-4.833,12.633c0,2.552,0.223,4.889,0.67,7.01c0.447,2.121,1.053,3.94,1.818,5.455 c0.765,1.515,1.715,2.871,2.847,4.067s2.313,2.169,3.541,2.919c1.228,0.751,2.616,1.396,4.163,1.938 c1.547,0.543,3.014,0.957,4.402,1.245c1.388,0.287,2.911,0.511,4.57,0.67c-2.616,1.787-3.924,4.626-3.924,8.517v7.487 c-1.445-0.43-2.869-0.938-4.268-1.53c-4.899-2.073-9.301-5.041-13.083-8.823c-3.782-3.782-6.75-8.184-8.823-13.083 C9.934,60.948,8.847,55.56,8.847,50s1.087-10.948,3.231-16.016c2.073-4.899,5.041-9.301,8.823-13.083s8.184-6.75,13.083-8.823 C39.052,9.934,44.44,8.847,50,8.847s10.948,1.087,16.016,3.231c4.9,2.073,9.301,5.041,13.083,8.823 c3.782,3.782,6.75,8.184,8.823,13.083c2.143,5.069,3.23,10.457,3.23,16.016s-1.087,10.948-3.231,16.016 C85.848,70.915,82.88,75.317,79.099,79.099L79.099,79.099z"
+			></path>
+		</svg>
+	</a>
+</li>
+</ul>
+		</div>
+	</div>
+</div>
+<!-- end .footer -->
+<!-- Add jQuery and other scripts -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src=/assets/js/jquery-1.11.2.min.js><\/script>')</script>
+<script src="/assets/js/dropcap.min.js"></script>
+<script src="/assets/js/responsive-nav.min.js"></script>
+<script src="/assets/js/scripts.js"></script>
+</body>
+
+</html>

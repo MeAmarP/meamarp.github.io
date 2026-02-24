@@ -16,13 +16,12 @@ paginate_path: "blog/page:num/"
 # jekyll-paginate configuration
 paginate: 5
 
-# Plugins
-plugins: [jekyll-paginate, jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
+# Plugins (minimal)
+plugins: [jekyll-paginate]
 
 # Sass
 sass:
   style: compressed
-
 # Navigation Menu
 navigation:
   - title: Home

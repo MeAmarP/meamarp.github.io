@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title>AMAR POTDAR</title>
+		<description>Thoughts, Experiences, Projects</description>
+		<link></link>
+		<atom:link href="/rss-feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>What is Tokenization &amp; Why LLMs Don't See Words</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;blockquote&gt;
+  &lt;p&gt;“Everything should be made as simple as possible, but not simpler.”
+— Albert Einstein&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>
+				
+				<pubDate>Sun, 08 Feb 2026 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/what-is-tokenization/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/what-is-tokenization/</guid>
+			</item>
+		
+			<item>
+				<title>Workflow and Agent Patterns for Intelligent Systems</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This guide explores how intelligent systems can be structured using &lt;strong&gt;workflows&lt;/strong&gt; (deterministic flows) and &lt;strong&gt;agents&lt;/strong&gt; (autonomous decision-makers).&lt;br /&gt;
+Workflows ensure reproducible outcomes, while agents enable adaptability, reasoning, and context awareness in dynamic environments.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 11 Nov 2025 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/ai-agent-patterns/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/ai-agent-patterns/</guid>
+			</item>
+		
+			<item>
+				<title>CNN Series: ResNet</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;h2 id=&quot;paper&quot;&gt;Paper&lt;/h2&gt;
+
+</description>
+				
+				<pubDate>Sat, 04 May 2024 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/cnn-series-resnet/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/cnn-series-resnet/</guid>
+			</item>
+		
+			<item>
+				<title>CNN Series: VGGNet</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;h2 id=&quot;paper&quot;&gt;Paper&lt;/h2&gt;
+
+</description>
+				
+				<pubDate>Sun, 07 Apr 2024 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/cnn-series-vggnet/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/cnn-series-vggnet/</guid>
+			</item>
+		
+			<item>
+				<title>CNN Series: AlexNet</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;h2 id=&quot;paper&quot;&gt;Paper&lt;/h2&gt;
+
+</description>
+				
+				<pubDate>Sun, 07 Apr 2024 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/cnn-series-alexnet/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/cnn-series-alexnet/</guid>
+			</item>
+		
+			<item>
+				<title>LearningByDoing Series: Building Blocks of Neural Network - Activation Functions</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;p&gt;&lt;a href=&quot;https://colab.research.google.com/&quot;&gt;&lt;img src=&quot;https://colab.research.google.com/assets/colab-badge.svg&quot; alt=&quot;Colab badge&quot; /&gt;&lt;/a&gt;
+&lt;a href=&quot;https://pytorch.org/&quot;&gt;&lt;img src=&quot;https://img.shields.io/badge/PyTorch-1.14.0-orange.svg&quot; alt=&quot;PyTorch&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 27 Feb 2024 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/non-linear-activation/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/non-linear-activation/</guid>
+			</item>
+		
+			<item>
+				<title>LearningByDoing Series: Understanding effects of activation functions</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;p&gt;&lt;a href=&quot;https://colab.research.google.com/&quot;&gt;&lt;img src=&quot;https://colab.research.google.com/assets/colab-badge.svg&quot; alt=&quot;Colab badge&quot; /&gt;&lt;/a&gt;
+&lt;a href=&quot;https://pytorch.org/&quot;&gt;&lt;img src=&quot;https://img.shields.io/badge/PyTorch-1.14.0-orange.svg&quot; alt=&quot;PyTorch&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 27 Feb 2024 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/activation_functions_ablation_study/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/activation_functions_ablation_study/</guid>
+			</item>
+		
+			<item>
+				<title>CNN Series:0</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;p&gt;In this series, we’ll dive into the realm of CNNs, a groundbreaking class of neural networks designed to process visual data.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Sat, 20 May 2023 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/cnn-series-0/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/cnn-series-0/</guid>
+			</item>
+		
+			<item>
+				<title>CNN Series: LeNet</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;h2 id=&quot;paper&quot;&gt;Paper&lt;/h2&gt;
+
+</description>
+				
+				<pubDate>Wed, 17 May 2023 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/cnn-series-lenet/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/cnn-series-lenet/</guid>
+			</item>
+		
+			<item>
+				<title>BYTE: Simple and Effective association method</title>
+				
+					<dc:creator>Amar P</dc:creator>
+				
+				
+					<description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+</description>
+				
+				<pubDate>Mon, 15 May 2023 00:00:00 +0530</pubDate>
+				<link>http://0.0.0.0:4000/blog/BYTE/</link>
+				<guid isPermaLink="true">http://0.0.0.0:4000/blog/BYTE/</guid>
+			</item>
+		
+	</channel>
+</rss>
