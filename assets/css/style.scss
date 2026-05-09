@@ -197,7 +197,7 @@ code.highlighter-rouge {
 }
 
 .portfolio-home {
-	padding-bottom: 144px;
+	padding-bottom: 200px;
 }
 
 .section {
@@ -449,12 +449,16 @@ code.highlighter-rouge,
 }
 
 .bottom-dock {
-	position: static;
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 30;
 	display: flex;
 	gap: 10px;
 	width: fit-content;
 	max-width: calc(100% - 20px);
-	margin: 56px auto 24px;
+	margin: 0;
 	padding: 10px;
 	border-radius: 999px;
 	background: rgba(16, 16, 16, 0.88);
@@ -630,9 +634,9 @@ pre {
 	}
 
 	.bottom-dock {
-		width: calc(100% - 20px);
+		width: calc(100% - 40px);
 		justify-content: space-between;
-		margin: 40px auto 24px;
+		margin: 0;
 	}
 
 	.dock-tab {
