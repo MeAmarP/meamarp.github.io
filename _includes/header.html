@@ -1,15 +1,17 @@
- <div class="header {% if site.header == 'large' %}header--large{% endif %}">
-     <div class="container">
-         <h1 class="logo"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-         <nav class="nav-collapse">
-             <ul class="noList">
-                 {%- for link in site.navigation -%}{%- assign current = nil -%}{%- if page.url contains link.url or forloop.first and page.url == '/' or page.url == 'index.html' -%}{%- assign current = 'current' -%}{%- endif -%}
-                 <li class="element {%- if forloop.first -%}first{%- endif -%} {{ current }} {%- if forloop.last -%}last{%- endif -%}">
-                     <a href="{{ link.url | relative_url }}">{{ link.title }}</a>
-                 </li>
-                 {%- endfor -%}
-                 <li> <a href="https://github.com/MeAmarP" target="_blank">GitHub</a></li>
-             </ul>
-         </nav>
-     </div>
- </div><!-- end .header -->
+<header class="site-header">
+	<div class="site-shell">
+		<div class="topbar">
+			<a class="brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+			<nav class="topnav" aria-label="Primary">
+				<a href="/#home">Home</a>
+				<a href="/#projects">Projects</a>
+				<a href="/#blogs">Blogs</a>
+				<a href="/#contact">Contact</a>
+			</nav>
+			<div class="topbar-actions">
+				<div class="search-pill">Markdown posts, diagrams, projects</div>
+				<a class="action-pill" href="/#contact">Work with me</a>
+			</div>
+		</div>
+	</div>
+</header>

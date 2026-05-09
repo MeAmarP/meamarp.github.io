@@ -2,34 +2,145 @@
 layout: default
 title: Home
 ---
-<div class="home" id="home">
-	<h1 class="pageTitle">Recent Posts</h1>
-	<div class="posts noList">
-		{%- for post in paginator.posts -%}
-		<article>
-			<span class="date">{{ post.date | date: '%B %d, %Y' }}</span>
-			<h3>
-				<a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-			</h3>
-			<p>
-				{%- if post.description -%}{{ post.description }}{%- else -%}{{
-				post.excerpt | strip_html }}{%- endif -%}
+<div class="portfolio-home" id="home">
+	<section class="hero section">
+		<div class="hero-copy">
+			<p class="eyebrow">Portfolio / engineer / writer</p>
+			<h1>
+				I build machine learning systems, write about them clearly, and ship
+				useful things on the web.
+			</h1>
+			<p class="hero-text">
+				My portfolio is structured like a product landing page and backed by
+				markdown-first writing. It combines concise biography, selected work,
+				recent blog posts, and direct ways to get in touch.
 			</p>
-		</article>
-		{%- endfor -%}
-	</div>
-	<!-- Pagination links -->
-	<div class="pagination">
-		{%- if paginator.previous_page -%}
-		<a
-			href="{{ paginator.previous_page_path | relative_url }}"
-			class="previous button__outline"
-			>Newer Posts</a
-		>
-		{%- endif -%} {%- if paginator.next_page -%}
-		<a href="{{ paginator.next_page_path | relative_url }}" class="next button__outline"
-			>Older Posts</a
-		>
-		{%- endif -%}
-	</div>
+			<div class="hero-actions">
+				<a class="primary-link" href="#projects">View selected projects</a>
+				<a class="secondary-link" href="#blogs">Read blog notes</a>
+			</div>
+		</div>
+
+		<aside class="hero-panel">
+			<div class="status-card">
+				<p class="mini-label">Currently focused on</p>
+				<h2>AI engineering, model evaluation, full-stack prototypes</h2>
+				<p>
+					Building practical systems with strong technical writing and
+					deliberate product design.
+				</p>
+			</div>
+			<div class="meta-grid">
+				<div class="meta-card">
+					<span class="mini-label">Base</span>
+					<strong>India</strong>
+				</div>
+				<div class="meta-card">
+					<span class="mini-label">Work</span>
+					<strong>ML + Web</strong>
+				</div>
+				<div class="meta-card">
+					<span class="mini-label">Writing</span>
+					<strong>Markdown, Mermaid</strong>
+				</div>
+				<div class="meta-card">
+					<span class="mini-label">Open to</span>
+					<strong>Projects</strong>
+				</div>
+			</div>
+		</aside>
+	</section>
+
+	<section class="feature-banner section" id="about">
+		<div class="feature-icon">AP</div>
+		<div class="feature-copy">
+			<h2>About me</h2>
+			<p>
+				I work at the intersection of generative AI, computer vision, deep
+				learning, and developer-facing product design. I like systems that are
+				technically rigorous but easy to understand.
+			</p>
+		</div>
+		<div class="feature-links">
+			<a href="#projects">See projects</a>
+			<a href="#blogs">Browse writing</a>
+		</div>
+	</section>
+
+	<section class="cards-section section" id="projects">
+		<div class="section-heading">
+			<p class="eyebrow">Selected work</p>
+			<h2>Projects</h2>
+		</div>
+		<div class="card-grid three-up">
+			<article class="content-card">
+				<span class="card-kicker">ML systems</span>
+				<h3>Experimentation and evaluation tooling</h3>
+				<p>
+					Workflows for testing model behavior, comparing prompts, and making
+					results inspectable for fast iteration.
+				</p>
+			</article>
+			<article class="content-card">
+				<span class="card-kicker">Web products</span>
+				<h3>Interfaces for technical users</h3>
+				<p>
+					Dashboards, knowledge surfaces, and clean information architecture
+					for technical tools and internal platforms.
+				</p>
+			</article>
+			<article class="content-card">
+				<span class="card-kicker">Applied AI</span>
+				<h3>Research translated into practical prototypes</h3>
+				<p>
+					Small but complete builds that turn technical ideas into interactive,
+					testable systems.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="cards-section section" id="blogs">
+		<div class="section-heading">
+			<p class="eyebrow">Recent writing</p>
+			<h2>Blogs</h2>
+		</div>
+		<div class="card-grid two-wide">
+			{%- assign featured_posts = site.posts | slice: 0, 4 -%}
+			{%- for post in featured_posts -%}
+			<article class="content-card blog-card">
+				<span class="card-kicker">{{ post.date | date: '%b %Y' }}</span>
+				<h3>
+					<a class="card-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+				</h3>
+				<p>
+					{%- if post.description -%}
+						{{ post.description }}
+					{%- else -%}
+						{{ post.excerpt | strip_html | truncatewords: 28 }}
+					{%- endif -%}
+				</p>
+			</article>
+			{%- endfor -%}
+		</div>
+	</section>
+
+	<section class="contact-section section" id="contact">
+		<div class="section-heading">
+			<p class="eyebrow">Reach out</p>
+			<h2>Contact</h2>
+		</div>
+		<div class="contact-panel">
+			<div>
+				<p class="contact-copy">
+					If you want to discuss machine learning systems, evaluation,
+					developer tools, or technical writing, this is the place to connect.
+				</p>
+			</div>
+			<div class="contact-actions">
+				<a class="action-pill muted" href="https://github.com/{{ site.social.github }}" target="_blank" rel="noreferrer">GitHub</a>
+				<a class="action-pill" href="/about">About</a>
+			</div>
+		</div>
+	</section>
 </div>
