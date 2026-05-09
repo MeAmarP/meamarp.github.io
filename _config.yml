@@ -9,6 +9,8 @@ baseurl: # Only necessary when hosting in a sub-directory
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
 highlighter: rouge
 permalink: blog/:title/
 paginate_path: "blog/page:num/"
@@ -23,6 +25,10 @@ plugins: [jekyll-paginate]
 exclude:
   - package.json
   - package-lock.json
+  - vendor/
+  - Gemfile
+  - Gemfile.disabled
+  - Gemfile.lock
 
 # Sass
 sass:
@@ -42,7 +48,7 @@ social:
   twitter: 
   facebook: 
   email: 
-  linkedin: 
+  linkedin: meamarp
   youtube: 
   tumblr: 
 
