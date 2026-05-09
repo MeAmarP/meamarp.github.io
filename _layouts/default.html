@@ -11,11 +11,17 @@
    {%- include header.html -%}
 
    <div class="content">
-      <div class="container">
+      <div class="site-shell">
          {{ content }}
       </div>
    </div><!-- end .content -->
 
+   <nav class="bottom-dock" aria-label="Bottom tabs">
+      <a href="/#home" class="dock-tab {% if page.url == '/' or page.url == '/index.html' %}active{% endif %}">Home</a>
+      <a href="/#contact" class="dock-tab">Contact</a>
+      <a href="https://github.com/{{ site.social.github }}" class="dock-tab" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="/#blogs" class="dock-tab">Blogs</a>
+   </nav>
    {%- include footer.html -%}
    {%- include scripts.html -%}
 
