@@ -46,61 +46,19 @@ title: Home
 		</aside>
 	</section>
 
-	<section class="feature-banner section" id="about">
-		<div class="feature-icon">AP</div>
-		<div class="feature-copy">
-			<h2>About me</h2>
-			<p>
-				I work at the intersection of GenAI, Computer Vision, and Deep Learning. I love building sophisticated products. I like systems that are technically rigorous but easy to understand.
-			</p>
-		</div>
-		<div class="feature-links">
-			<a href="#projects">See projects</a>
-			<a href="#blogs">Browse writing</a>
-		</div>
-	</section>
-
 	<section class="cards-section section" id="projects">
 		<div class="section-heading">
 			<p class="eyebrow">Selected work</p>
 			<h2>Projects</h2>
 		</div>
 		<div class="card-grid two-wide">
+			{%- for project in site.data.projects -%}
 			<article class="content-card">
-				<span class="card-kicker">Computer Vision · Python</span>
-				<h3><a class="card-link" href="https://github.com/MeAmarP/computer-vision-services" target="_blank" rel="noreferrer">Computer Vision Services</a></h3>
-				<p>
-					Dockerised CV microservices built on PyTorch, TensorFlow, and
-					PaddlePaddle — covering classification, segmentation, and keypoint
-					detection, ready to drop into any pipeline.
-				</p>
+				<span class="card-kicker">{{ project.kicker }}</span>
+				<h3><a class="card-link" href="{{ project.url }}" target="_blank" rel="noreferrer">{{ project.title }}</a></h3>
+				<p>{{ project.description }}</p>
 			</article>
-			<article class="content-card">
-				<span class="card-kicker">Video Analytics · Deep Learning</span>
-				<h3><a class="card-link" href="https://github.com/MeAmarP/Nirikshan" target="_blank" rel="noreferrer">Nirikshan</a></h3>
-				<p>
-					End-to-end video analytics pipeline powered by AI and deep learning.
-					Handles real-time scene understanding, object tracking, and
-					event-driven alerts at scale.
-				</p>
-			</article>
-			<article class="content-card">
-				<span class="card-kicker">Agents · Protocols</span>
-				<h3><a class="card-link" href="https://github.com/MeAmarP/multiagent_protocols_framework_survey" target="_blank" rel="noreferrer">Multi-Agent Protocols Survey</a></h3>
-				<p>
-					Exploration of modern multi-agent protocols — MCP, ACP, and A2A —
-					with comparisons of architectures and real-world applicability.
-				</p>
-			</article>
-			<article class="content-card">
-				<span class="card-kicker">Image Processing · OpenCV</span>
-				<h3><a class="card-link" href="https://github.com/MeAmarP/opencv_snipps" target="_blank" rel="noreferrer">OpenCV Snippets</a></h3>
-				<p>
-					A curated collection of practical Python recipes for image processing
-					with OpenCV — filtering, transforms, contour analysis, and feature
-					extraction.
-				</p>
-			</article>
+			{%- endfor -%}
 		</div>
 	</section>
 
