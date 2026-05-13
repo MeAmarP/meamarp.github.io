@@ -27,7 +27,7 @@ $( document ).ready(function() {
   var sectionTabMap = [
     { id: 'contact',  href: '/#contact' },
     { id: 'blogs',    href: '/#blogs' },
-    { id: 'projects', href: '/#home' },
+    { id: 'projects', href: '/#projects' },
   ];
 
   function updateActive() {
