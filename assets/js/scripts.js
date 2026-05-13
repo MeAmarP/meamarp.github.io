@@ -17,4 +17,36 @@ $( document ).ready(function() {
 
 });
 
+// Scroll-spy: update bottom-dock active tab as user scrolls (home page only)
+(function () {
+  if (!document.querySelector('.portfolio-home')) return;
+
+  var tabs = document.querySelectorAll('.dock-tab');
+
+  // Listed bottom-to-top: first match wins when section top is above viewport midpoint
+  var sectionTabMap = [
+    { id: 'contact',  href: '/#contact' },
+    { id: 'blogs',    href: '/#blogs' },
+    { id: 'projects', href: '/#home' },
+  ];
+
+  function updateActive() {
+    var mid = window.innerHeight * 0.5;
+    var activeHref = '/#home';
+    for (var i = 0; i < sectionTabMap.length; i++) {
+      var el = document.getElementById(sectionTabMap[i].id);
+      if (el && el.getBoundingClientRect().top <= mid) {
+        activeHref = sectionTabMap[i].href;
+        break;
+      }
+    }
+    tabs.forEach(function (tab) {
+      tab.classList.toggle('active', tab.getAttribute('href') === activeHref);
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+}());
+
 
