@@ -31,11 +31,11 @@ $( document ).ready(function() {
   ];
 
   function updateActive() {
-    var mid = window.innerHeight * 0.5;
+    var threshold = window.innerHeight * 0.75;
     var activeHref = '/#home';
     for (var i = 0; i < sectionTabMap.length; i++) {
       var el = document.getElementById(sectionTabMap[i].id);
-      if (el && el.getBoundingClientRect().top <= mid) {
+      if (el && el.getBoundingClientRect().top <= threshold) {
         activeHref = sectionTabMap[i].href;
         break;
       }
