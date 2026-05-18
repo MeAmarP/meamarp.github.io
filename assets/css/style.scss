@@ -103,11 +103,11 @@ body::before {
 }
 
 .topbar {
-	display: grid;
-	grid-template-columns: 1fr auto;
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	gap: 20px;
-	padding: 18px 0;
+	padding: 12px 0;
 }
 
 .brand,
@@ -472,36 +472,25 @@ code.highlighter-rouge,
 	gap: 18px;
 }
 
-.bottom-dock {
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 30;
+.top-dock {
 	display: flex;
-	gap: 6px;
-	width: fit-content;
-	max-width: calc(100% - 20px);
-	margin: 0;
-	padding: 8px;
+	gap: 4px;
+	padding: 4px;
 	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.08);
-	backdrop-filter: blur(48px) saturate(200%);
-	-webkit-backdrop-filter: blur(48px) saturate(200%);
-	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.12);
 	box-shadow:
-		0 20px 60px rgba(0, 0, 0, 0.55),
-		0 0 0 0.5px rgba(0, 0, 0, 0.25),
-		inset 0 1.5px 0 rgba(255, 255, 255, 0.32),
-		inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+		inset 0 1px 0 rgba(255, 255, 255, 0.18),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.12);
 }
 
 .dock-tab {
-	padding: 14px 18px;
+	padding: 8px 16px;
 	border-radius: 999px;
 	color: var(--muted);
 	font-weight: 700;
-	transition: background 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+	font-size: 0.92rem;
+	transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
 }
 
 .dock-tab.active {
@@ -666,16 +655,7 @@ pre {
 		align-items: flex-start;
 	}
 
-	.bottom-dock {
-		width: calc(100% - 40px);
-		justify-content: space-between;
-		margin: 0;
-	}
-
-	.dock-tab {
-		flex: 1 1 auto;
-		text-align: center;
-		padding: 12px 10px;
-		font-size: 0.92rem;
+	.top-dock {
+		display: none;
 	}
 }
