@@ -57,6 +57,7 @@ title: Home
 			</div>
 		</div>
 		<div class="card-grid three-up">
+			{%- for project in site.data.projects -%}
 			<article class="content-card">
 				<span class="card-kicker">{{ project.kicker }}</span>
 				<h3><a class="card-link" href="{{ project.url }}" target="_blank" rel="noreferrer">{{ project.title }}</a></h3>
