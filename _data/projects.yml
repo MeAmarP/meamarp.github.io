@@ -27,3 +27,17 @@
   description: >
     A curated collection of practical Python recipes for image processing
     with OpenCV — filtering, transforms, contour analysis, and feature extraction.
+
+- title: Local LLM Quant Bench
+  kicker: LLMs · Quantization
+  url: https://github.com/MeAmarP/local-llm-quant-bench
+  description: >
+    A local benchmark harness for comparing LLM quantization/runtime variants under
+    fixed prompts and decoding settings.
+
+- title: HeyBagh
+  kicker: Image Search · Vector Database
+  url: https://github.com/MeAmarP/HeyBagh
+  description: >
+    Content-based image retrieval engine using ResNet-18 embeddings and Milvus
+    vector database — find and discover visually similar images via a Gradio interface.
