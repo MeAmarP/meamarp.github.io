@@ -21,7 +21,7 @@ $( document ).ready(function() {
 (function () {
   if (!document.querySelector('.portfolio-home')) return;
 
-  var tabs = document.querySelectorAll('.dock-tab');
+  var tabs = document.querySelectorAll('.top-dock .dock-tab');
 
   // Listed bottom-to-top: first match wins when section top is above viewport midpoint
   var sectionTabMap = [
