@@ -36,16 +36,18 @@
 /* Portfolio theme overrides */
 
 :root {
-	--bg: #060606;
-	--panel: #121212;
-	--panel-2: #171717;
-	--panel-3: #1d1d1d;
-	--line: rgba(255, 255, 255, 0.1);
-	--line-strong: rgba(255, 255, 255, 0.16);
-	--text: #f2f2f2;
-	--muted: #b8b8b8;
-	--soft: #969696;
-	--shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+	--bg: #06060e;
+	--panel: rgba(255, 255, 255, 0.055);
+	--panel-2: rgba(255, 255, 255, 0.075);
+	--panel-3: rgba(255, 255, 255, 0.095);
+	--line: rgba(255, 255, 255, 0.12);
+	--line-strong: rgba(255, 255, 255, 0.22);
+	--specular: rgba(255, 255, 255, 0.24);
+	--glass-blur: blur(28px) saturate(160%);
+	--text: #f0f0f8;
+	--muted: #b4b4cc;
+	--soft: #8888a8;
+	--shadow: 0 24px 80px rgba(0, 0, 0, 0.50);
 	--radius-xl: 28px;
 	--radius-lg: 22px;
 	--radius-md: 16px;
@@ -58,8 +60,11 @@ html {
 
 body {
 	background:
-		radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.08), transparent 32%),
-		linear-gradient(180deg, #050505 0%, #090909 100%);
+		radial-gradient(ellipse 55% 45% at 12% 18%, rgba(110, 50, 255, 0.22), transparent 60%),
+		radial-gradient(ellipse 50% 42% at 88% 55%, rgba(0, 170, 255, 0.18), transparent 58%),
+		radial-gradient(ellipse 42% 36% at 52% 92%, rgba(0, 220, 170, 0.12), transparent 52%),
+		radial-gradient(ellipse 35% 30% at 70% 10%, rgba(255, 80, 160, 0.10), transparent 50%),
+		linear-gradient(180deg, #06060e 0%, #08081a 100%);
 	color: var(--text);
 	font-family: "Manrope", Helvetica, Arial, sans-serif;
 }
@@ -69,12 +74,12 @@ body::before {
 	position: fixed;
 	inset: 0;
 	background:
-		linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-	background-size: 40px 40px;
-	opacity: 0.32;
+		linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
+	background-size: 52px 52px;
+	opacity: 0.22;
 	pointer-events: none;
-	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 78%);
+	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent 65%);
 }
 
 .site-shell {
@@ -90,9 +95,11 @@ body::before {
 	position: sticky;
 	top: 0;
 	z-index: 20;
-	background: rgba(6, 6, 6, 0.88);
-	backdrop-filter: blur(16px);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	background: rgba(8, 8, 20, 0.55);
+	backdrop-filter: blur(28px) saturate(180%);
+	-webkit-backdrop-filter: blur(28px) saturate(180%);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+	box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04), 0 1px 40px rgba(0, 0, 0, 0.30);
 }
 
 .topbar {
@@ -169,8 +176,13 @@ body::before {
 pre,
 code.highlighter-rouge {
 	border: 1px solid var(--line);
-	background: linear-gradient(180deg, var(--panel-2), var(--panel));
-	box-shadow: var(--shadow);
+	background: var(--panel);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	box-shadow:
+		var(--shadow),
+		inset 0 1px 0 var(--specular),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 }
 
 .search-pill {
@@ -185,15 +197,23 @@ code.highlighter-rouge {
 	padding: 14px 20px;
 	border-radius: 999px;
 	font-weight: 700;
-	background: linear-gradient(180deg, #f6f6f6, #dddddd);
-	color: #101010;
-	box-shadow: none;
+	background: rgba(255, 255, 255, 0.90);
+	color: #0a0a16;
+	border: 1px solid rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	box-shadow:
+		0 4px 20px rgba(255, 255, 255, 0.14),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .action-pill.muted {
-	background: linear-gradient(180deg, #1a1a1a, #111111);
+	background: rgba(255, 255, 255, 0.07);
 	color: var(--text);
 	border-color: var(--line-strong);
+	box-shadow:
+		var(--shadow),
+		inset 0 1px 0 var(--specular);
 }
 
 .portfolio-home {
@@ -395,8 +415,12 @@ code.highlighter-rouge,
 
 .content-card:hover {
 	transform: translateY(-4px);
-	border-color: rgba(255, 255, 255, 0.18);
-	background: linear-gradient(180deg, #212121, #121212);
+	border-color: rgba(255, 255, 255, 0.22);
+	background: rgba(255, 255, 255, 0.10);
+	box-shadow:
+		0 32px 80px rgba(0, 0, 0, 0.55),
+		inset 0 1px 0 rgba(255, 255, 255, 0.32),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.12);
 }
 
 .card-kicker {
@@ -455,15 +479,21 @@ code.highlighter-rouge,
 	transform: translateX(-50%);
 	z-index: 30;
 	display: flex;
-	gap: 10px;
+	gap: 6px;
 	width: fit-content;
 	max-width: calc(100% - 20px);
 	margin: 0;
-	padding: 10px;
+	padding: 8px;
 	border-radius: 999px;
-	background: rgba(16, 16, 16, 0.88);
-	backdrop-filter: blur(18px);
-	box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(48px) saturate(200%);
+	-webkit-backdrop-filter: blur(48px) saturate(200%);
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	box-shadow:
+		0 20px 60px rgba(0, 0, 0, 0.55),
+		0 0 0 0.5px rgba(0, 0, 0, 0.25),
+		inset 0 1.5px 0 rgba(255, 255, 255, 0.32),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
 .dock-tab {
@@ -471,12 +501,15 @@ code.highlighter-rouge,
 	border-radius: 999px;
 	color: var(--muted);
 	font-weight: 700;
-	transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+	transition: background 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
 }
 
 .dock-tab.active {
-	background: rgba(255, 255, 255, 0.1);
-	color: var(--text);
+	background: rgba(255, 255, 255, 0.14);
+	color: #ffffff;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.36),
+		0 4px 20px rgba(200, 180, 255, 0.18);
 }
 
 .post {
